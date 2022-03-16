@@ -68,7 +68,7 @@ class RealSense:
                 # Update color and depth frames:ss
                 depth_frame = rsframes.get_depth_frame()
                 # Convert to numpy array
-		depth = cv2.normalize(~np.asanyarray(depth_frame.get_data()), None, 255, 0, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+                depth = cv2.normalize(~np.asanyarray(depth_frame.get_data()), None, 255, 0, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
                 #depth = np.asanyarray(self.colorizer.colorize(depth_frame).get_data())
         return(time.time(), rgb, depth, accel, gyro)
 
