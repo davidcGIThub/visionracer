@@ -14,7 +14,7 @@ class birdsEye:
         self.lane_lines()
         # self.homography()
         
-        cv2.waitKey()
+        # cv2.waitKey(1)
 
     def colorSegment(self, img):
         # Mask green portion of car that is visible
