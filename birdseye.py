@@ -2,39 +2,46 @@ import cv2
 import numpy as np
 
 class birdsEye:
-    def __init__(self, file) -> None:
-        self.transform = np.load(file)['arr_0'] # File containing birdseye view transformation
+    def __init__(self, file=None, img_height=480) -> None:
+        if file is not None:
+            self.transform = np.load(file)['arr_0'] # File containing birdseye view transformation
         self.kernel = np.ones((3,3), np.uint8)
         self.rect = []
         self.pointsCollected = False
+        
+        self.top_crop = int(0.3 * img_height)
+        self.bottom_crop = int(0.96 * img_height)
 
     def process(self, img):
         self.colorSegment(img)
-        self.homography()
         self.lane_lines()
-        cv2.waitKey()
+        # self.homography()
+        
+        # cv2.waitKey(1)
 
     def colorSegment(self, img):
         # Mask green portion of car that is visible
-        img[460:,:,:] = 0
+        # img[460:,:,:] = 0
+        # img[:150,:,:] = 0
+        img = img[self.top_crop:self.bottom_crop,:,:]
         # Split into bgr and hsv
         cv2.imshow("test", img)
         self.bgr = img
         self.hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         b,g,r = cv2.split(self.bgr)
         h,s,v = cv2.split(self.hsv)
-        cv2.imshow("b", b)
-        cv2.imshow("s", s)
+        # cv2.imshow("b", b)
+        # cv2.imshow("s", s)
         
         # Threshold on s and b
         # S: blue=100, orange=240
         _, threshS = cv2.threshold(s, 80, 255, cv2.THRESH_BINARY)
         _, threshB = cv2.threshold(b, 130, 255, cv2.THRESH_BINARY)
-        _, threshG = cv2.threshold(g, 170, 255, cv2.THRESH_BINARY)
-        _, threshR = cv2.threshold(r, 195, 255, cv2.THRESH_BINARY)
-        cv2.imshow("s_thresh", threshS)
-        cv2.imshow("g_thresh", threshG)
-        cv2.imshow("b_thresh", threshB)
+        _, threshG = cv2.threshold(g, 135, 255, cv2.THRESH_BINARY)
+        _, threshR = cv2.threshold(r, 190, 255, cv2.THRESH_BINARY)
+        # cv2.imshow("s_thresh", threshS)
+        # cv2.imshow("g_thresh", threshG)
+        # cv2.imshow("b_thresh", threshB)
 
         # Remove noise
         # morphS = cv2.morphologyEx(threshS, cv2.MORPH_OPEN, self.kernel)
@@ -46,26 +53,28 @@ class birdsEye:
         self.cones = cv2.bitwise_and(threshR, threshS)
         self.lanes = cv2.morphologyEx(self.lanes, cv2.MORPH_OPEN, self.kernel)
         self.cones = cv2.morphologyEx(self.cones, cv2.MORPH_OPEN, self.kernel)
-        cv2.imshow("lanes", self.lanes)
-        cv2.imshow("cones", self.cones)
+        # cv2.imshow("lanes", self.lanes)
+        # cv2.imshow("cones", self.cones)
+        cv2.imshow("obstacles", self.lanes+self.cones)
 
 
     def lane_lines(self):
-        lines = cv2.HoughLinesP(self.lanes, 1, np.pi/180, 30, maxLineGap=100)
-        lanes_copy = np.copy(self.lanes)
-        lanes_copy = cv2.cvtColor(lanes_copy, cv2.COLOR_GRAY2BGR)
+        lines = cv2.HoughLinesP(self.lanes, 1, np.pi/180, 30, maxLineGap=60)
+        self.lanes_copy = np.copy(self.lanes)
+        self.lanes_copy = cv2.cvtColor(self.lanes_copy, cv2.COLOR_GRAY2BGR)
         # draw Hough lines
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(lanes_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                cv2.line(self.lanes_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
         
-        cv2.imshow("lane draw",lanes_copy)
+        cv2.imshow("lane draw",self.lanes_copy)
 
     def homography(self):
         # Apply transformation to generate birdseye view
         IMAGE_H, IMAGE_W = self.lanes.shape
-        warped_img = cv2.warpPerspective(self.lanes, self.transform, (IMAGE_W, IMAGE_H))
-        cv2.imshow("birdseye", warped_img)
+        warped_img = cv2.warpPerspective(self.lanes_copy, self.transform, (IMAGE_W, IMAGE_H))
+        # cv2.imshow("birdseye", warped_img)
 
     def homographyCalib(self):
         # Solve for the transform that generates a birdseye view
@@ -106,9 +115,16 @@ class birdsEye:
 
 if __name__ == "__main__":
     # Testing
-    img_file = "./pictures/img5.png"
-    img = cv2.imread(img_file)
-    cv2.imshow("test", img)
-
+    import os
+    print(os.getcwd())
     processor = birdsEye(file = "./visionracer/transform2.npz")
+    img = cv2.imread("./pictures/img3.png")
+    cv2.imshow("test", img)
     processor.process(img)
+    img_file = "./pictures/"
+    for file in os.listdir(img_file):
+        img = cv2.imread(img_file+file)
+        cv2.imshow("test", img)
+        processor.process(img)
+        cv2.waitKey()
+    

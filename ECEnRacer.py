@@ -26,6 +26,10 @@ from RealSense import *
 import numpy as np
 import imutils
 import cv2
+from birdseye import birdsEye
+
+# Instantiate lane detection
+detector = birdsEye(img_height=1080)
 
 rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
@@ -40,9 +44,11 @@ Car.pid(1)          # Use PID control
 # loop over frames from Realsense
 while True:
     (time, rgb, depth, accel, gyro) = rs.getData()
+    detector.process(rgb)
 
-    cv2.imshow("RGB", rgb)
-    cv2.imshow("Depth", depth)
+    # cv2.imshow("RGB", rgb)
+    # cv2.imshow("Depth", depth)
+
 
     '''
     Add your code to process rgb, depth, IMU data
