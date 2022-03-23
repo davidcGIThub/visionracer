@@ -2,8 +2,9 @@ import cv2
 import numpy as np
 
 class birdsEye:
-    def __init__(self, file) -> None:
-        self.transform = np.load(file)['arr_0'] # File containing birdseye view transformation
+    def __init__(self, file=None) -> None:
+        if file is not None:
+            self.transform = np.load(file)['arr_0'] # File containing birdseye view transformation
         self.kernel = np.ones((3,3), np.uint8)
         self.rect = []
         self.pointsCollected = False
@@ -11,7 +12,7 @@ class birdsEye:
     def process(self, img):
         self.colorSegment(img)
         self.lane_lines()
-        self.homography()
+        # self.homography()
         
         cv2.waitKey()
 
