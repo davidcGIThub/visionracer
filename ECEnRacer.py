@@ -27,7 +27,7 @@ import numpy as np
 import imutils
 import cv2
 
-rs = RealSense("/dev/video2", RS_VGA)		# RS_VGA, RS_720P, or RS_1080P
+rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
 
 # Use $ ls /dev/tty* to find the serial port connected to Arduino
