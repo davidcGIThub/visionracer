@@ -2,12 +2,15 @@ import cv2
 import numpy as np
 
 class birdsEye:
-    def __init__(self, file=None) -> None:
+    def __init__(self, file=None, img_height=480) -> None:
         if file is not None:
             self.transform = np.load(file)['arr_0'] # File containing birdseye view transformation
         self.kernel = np.ones((3,3), np.uint8)
         self.rect = []
         self.pointsCollected = False
+        
+        self.top_crop = int(0.3 * img_height)
+        self.bottom_crop = int(0.96 * img_height)
 
     def process(self, img):
         self.colorSegment(img)
@@ -20,7 +23,7 @@ class birdsEye:
         # Mask green portion of car that is visible
         # img[460:,:,:] = 0
         # img[:150,:,:] = 0
-        img = img[150:460,:,:]
+        img = img[self.top_crop:self.bottom_crop,:,:]
         # Split into bgr and hsv
         cv2.imshow("test", img)
         self.bgr = img
@@ -123,4 +126,5 @@ if __name__ == "__main__":
         img = cv2.imread(img_file+file)
         cv2.imshow("test", img)
         processor.process(img)
+        cv2.waitKey()
     

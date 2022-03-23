@@ -29,7 +29,7 @@ import cv2
 from birdseye import birdsEye
 
 # Instantiate lane detection
-detector = birdsEye()
+detector = birdsEye(img_height=1080)
 
 rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
