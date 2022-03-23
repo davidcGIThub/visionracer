@@ -66,47 +66,27 @@ while True:
     with Listener(
             on_press=on_press,
             on_release=on_release) as listener:
-        listener.join()
-#     for event in pygame.event.get():
-#         # check if the event is the X button  
-#         if event.type == pygame.KEYDOWN:
-#             if event.key==K_UP:
-#                 keys[0]=True
-#             elif event.key==K_LEFT:
-#                 keys[1]=True
-#             elif event.key==K_DOWN:
-#                 keys[2]=True
-#             elif event.key==K_RIGHT:
-#                 keys[3]=True
- 
-#         if event.type == pygame.KEYUP:
-#             if event.key==pygame.K_UP:
-#                 keys[0]=False
-#             elif event.key==pygame.K_LEFT:
-#                 keys[1]=False
-#             elif event.key==pygame.K_DOWN:
-#                 keys[2]=False
-#             elif event.key==pygame.K_RIGHT:
-#                 keys[3]=False
-    if keys[0]:
-        Car.drive(1.5)
-    else:
-        Car.drive(0)
-    
-    if keys[1]:
-        Car.steer(-30)
-    else:
-        Car.steer(0)
-    
-    if keys[3]:
-        Car.steer(30)
-    else:
-        Car.steer(0)
+        # listener.join()
 
-    if keys[2]:
-        Car.drive(-1.5)
-    else:
-        Car.drive(0)
+        if keys[0]:
+            Car.drive(1.5)
+        else:
+            Car.drive(0)
+        
+        if keys[1]:
+            Car.steer(-30)
+        else:
+            Car.steer(0)
+        
+        if keys[3]:
+            Car.steer(30)
+        else:
+            Car.steer(0)
+
+        if keys[2]:
+            Car.drive(-1.5)
+        else:
+            Car.drive(0)
 
 #     # command = input("Enter a command:\n")
 #     # if command == 's':
