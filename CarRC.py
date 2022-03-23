@@ -44,7 +44,8 @@ def on_press(key):
     elif key==Key.down and not keys[0]:
         Car.drive(-2.5)
         keys[2]=True
-    elif key==Key.right:
+    elif key==Key.right and not keys[1]:
+        Car.steer(30)
         keys[3]=True
 
     # if keys[0] and not keys[2]:
@@ -80,9 +81,10 @@ def on_release(key):
         Car.steer(0)
         keys[1]=False
     elif key==Key.down:
-        Car.drive(0)
+        Car.drive(0)    
         keys[2]=False
     elif key==Key.right:
+        Car.steer(0)
         keys[3]=False
 
 
