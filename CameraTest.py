@@ -19,7 +19,7 @@ from RealSense import *
 import cv2
 import imutils	
 
-rs = RealSense("/dev/video2", RS_VGA)    # RS_VGA, RS_720P, or RS_1080P
+rs = RealSense("/dev/video2", RS_1080P)    # RS_VGA, RS_720P, or RS_1080P
 writer = None
 recording = False
 frameIndex = 0
