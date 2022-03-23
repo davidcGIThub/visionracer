@@ -8,7 +8,8 @@ import numpy as np
 from scipy.optimize import fsolve
 
 class DirectionVectorGenerator:
-    def __init__(self , resolution, image_size=(640,480)):
+    def __init__(self , resolution=11, image_size=(640,480)):
+        self._resolution = resolution
         self._image_width = image_size[0]
         self._image_height = image_size[1]
         self._origin = (int(self._image_width/2),self._image_height)
@@ -18,7 +19,7 @@ class DirectionVectorGenerator:
 
     def generate_masks_and_angles(self):
         # Generate masks and their angles
-        xs = np.linspace(0,self._image_width,11)
+        xs = np.linspace(0,self._image_width,self._resolution)
         blank = np.zeros((self._image_height, self._image_width))
         for x in xs:
             endpoint = (int(x), 0)
