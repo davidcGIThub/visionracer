@@ -30,6 +30,7 @@ from Arduino import Arduino
 from pynput.keyboard import Key, Listener
 
 keys = [False, False, False, False]
+Car = Arduino("/dev/ttyUSB0", 115200) 
 
 def on_press(key):
     print('{0} pressed'.format(
@@ -83,6 +84,11 @@ def on_release(key):
     else:
         Car.drive(0)
     
+    if keys[0] and not keys[2]:
+        Car.drive(2.1)
+    else:
+        Car.drive(0)
+    
     if keys[1] and not keys[3]:
         Car.steer(-30)
     else:
@@ -93,12 +99,13 @@ def on_release(key):
     else:
         Car.steer(0)
 
-    if keys[2] and not keys[1]:
+    if keys[2] and not keys[0]:
         Car.drive(-2.1)
     else:
-        Car.drive(0) 
+        Car.drive(0)
+ 
 # # Use $ ls /dev/tty* to find the serial port connected to Arduino
-Car = Arduino("/dev/ttyUSB0", 115200)                # Linux
+               # Linux
 # #Car = Arduino("/dev/tty.usbserial-2140", 115200)     # Mac
 # pygame.init()
 # keys = [False, False, False, False]
@@ -110,7 +117,7 @@ while True:
 
         # if keys[0] and not keys[2]:
         #     Car.drive(2.1)
-        # else:
+        # else: 
         #     Car.drive(0)
         
         # if keys[1] and not keys[3]:
