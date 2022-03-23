@@ -25,36 +25,69 @@
 '''
 
 from Arduino import Arduino
-import pygame
-from pygame.locals import *
+# import pygame
+# from pygame.locals import *
+from pynput.keyboard import Key, Listener
 
-# Use $ ls /dev/tty* to find the serial port connected to Arduino
-Car = Arduino("/dev/ttyUSB0", 115200)                # Linux
-#Car = Arduino("/dev/tty.usbserial-2140", 115200)     # Mac
-pygame.init()
 keys = [False, False, False, False]
+
+def on_press(key):
+    print('{0} pressed'.format(
+        key))
+    if key==Key.up:
+        keys[0]=True
+    elif key==Key.left:
+        keys[1]=True
+    elif key==Key.down:
+        keys[2]=True
+    elif key==Key.right:
+        keys[3]=True
+
+def on_release(key):
+    print('{0} release'.format(
+        key))
+    if key == Key.esc:
+        # Stop listener
+        return False
+    if key==Key.up:
+        keys[0]=False
+    elif key==Key.left:
+        keys[1]=False
+    elif key==Key.down:
+        keys[2]=False
+    elif key==Key.right:
+        keys[3]=False    
+# # Use $ ls /dev/tty* to find the serial port connected to Arduino
+Car = Arduino("/dev/ttyUSB0", 115200)                # Linux
+# #Car = Arduino("/dev/tty.usbserial-2140", 115200)     # Mac
+# pygame.init()
+# keys = [False, False, False, False]
 while True:
-    for event in pygame.event.get():
-        # check if the event is the X button  
-        if event.type == pygame.KEYDOWN:
-            if event.key==K_UP:
-                keys[0]=True
-            elif event.key==K_LEFT:
-                keys[1]=True
-            elif event.key==K_DOWN:
-                keys[2]=True
-            elif event.key==K_RIGHT:
-                keys[3]=True
+    with Listener(
+            on_press=on_press,
+            on_release=on_release) as listener:
+        listener.join()
+#     for event in pygame.event.get():
+#         # check if the event is the X button  
+#         if event.type == pygame.KEYDOWN:
+#             if event.key==K_UP:
+#                 keys[0]=True
+#             elif event.key==K_LEFT:
+#                 keys[1]=True
+#             elif event.key==K_DOWN:
+#                 keys[2]=True
+#             elif event.key==K_RIGHT:
+#                 keys[3]=True
  
-        if event.type == pygame.KEYUP:
-            if event.key==pygame.K_UP:
-                keys[0]=False
-            elif event.key==pygame.K_LEFT:
-                keys[1]=False
-            elif event.key==pygame.K_DOWN:
-                keys[2]=False
-            elif event.key==pygame.K_RIGHT:
-                keys[3]=False
+#         if event.type == pygame.KEYUP:
+#             if event.key==pygame.K_UP:
+#                 keys[0]=False
+#             elif event.key==pygame.K_LEFT:
+#                 keys[1]=False
+#             elif event.key==pygame.K_DOWN:
+#                 keys[2]=False
+#             elif event.key==pygame.K_RIGHT:
+#                 keys[3]=False
     if keys[0]:
         Car.drive(1.5)
     else:
@@ -75,24 +108,24 @@ while True:
     else:
         Car.drive(0)
 
-    # command = input("Enter a command:\n")
-    # if command == 's':
-    #     angle = input("Enter a steering angle (-30 ~ 30):\n")
-    #     Car.steer(float(angle))
-    # elif command == 'd':
-    #     speed = input("Enter a drive speed (-3.0 ~ 3.0):\n")
-    #     Car.drive(float(speed))
-    # elif command == 'z':
-    #     pwm = input("Enter a PWM value (~1500):\n")
-    #     Car.zero(int(pwm))
-    # elif command == 'p':
-    #     flag = input("Enter 1 to turn on PID and 0 to turn off:\n")
-    #     Car.pid(int(flag))
-    # elif command == 'e':
-    #     print(int(Car.encoder().strip()))   # need to strip character of \r or \n
-    # elif command == 'q':
-    #     if Car.CarConnected:
-    #         del Car
-    #     break
+#     # command = input("Enter a command:\n")
+#     # if command == 's':
+#     #     angle = input("Enter a steering angle (-30 ~ 30):\n")
+#     #     Car.steer(float(angle))
+#     # elif command == 'd':
+#     #     speed = input("Enter a drive speed (-3.0 ~ 3.0):\n")
+#     #     Car.drive(float(speed))
+#     # elif command == 'z':
+#     #     pwm = input("Enter a PWM value (~1500):\n")
+#     #     Car.zero(int(pwm))
+#     # elif command == 'p':
+#     #     flag = input("Enter 1 to turn on PID and 0 to turn off:\n")
+#     #     Car.pid(int(flag))
+#     # elif command == 'e':
+#     #     print(int(Car.encoder().strip()))   # need to strip character of \r or \n
+#     # elif command == 'q':
+#     #     if Car.CarConnected:
+#     #         del Car
+#     #     break
 
 
