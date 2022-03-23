@@ -106,27 +106,27 @@ while True:
     with Listener(
             on_press=on_press,
             on_release=on_release) as listener:
-        # listener.join()
+        listener.join()
 
-        if keys[0] and not keys[2]:
-            Car.drive(2.1)
-        else:
-            Car.drive(0)
+        # if keys[0] and not keys[2]:
+        #     Car.drive(2.1)
+        # else:
+        #     Car.drive(0)
         
-        if keys[1] and not keys[3]:
-            Car.steer(-30)
-        else:
-            Car.steer(0)
+        # if keys[1] and not keys[3]:
+        #     Car.steer(-30)
+        # else:
+        #     Car.steer(0)
         
-        if keys[3] and not keys[1]:
-            Car.steer(30)
-        else:
-            Car.steer(0)
+        # if keys[3] and not keys[1]:
+        #     Car.steer(30)
+        # else:
+        #     Car.steer(0)
 
-        if keys[2] and not keys[1]:
-            Car.drive(-2.1)
-        else:
-            Car.drive(0)
+        # if keys[2] and not keys[1]:
+        #     Car.drive(-2.1)
+        # else:
+        #     Car.drive(0)
 
 #     # command = input("Enter a command:\n")
 #     # if command == 's':
