@@ -48,29 +48,9 @@ def on_press(key):
         Car.steer(30)
         keys[3]=True
 
-    # if keys[0] and not keys[2]:
-    #     Car.drive(2.5)
-    # else:
-    #     Car.drive(0)
-    
-    # if keys[1] and not keys[3]:
-    #     Car.steer(-30)
-    # else:
-    #     Car.steer(0)
-    
-    # if keys[3] and not keys[1]:
-    #     Car.steer(30)
-    # else:
-    #     Car.steer(0)
-
-    # if keys[2] and not keys[0]:
-    #     Car.drive(-2.5)
-    # else:
-    #     Car.drive(0)
-
 def on_release(key):
-    print('{0} release'.format(
-        key))
+    # print('{0} release'.format(
+    #     key))
     if key == Key.esc:
         # Stop listener
         return False
@@ -88,75 +68,9 @@ def on_release(key):
         keys[3]=False
 
 
-    # if keys[0] and not keys[2]:
-    #     Car.drive(2.5)
-    # else:
-    #     Car.drive(0)
-    
-    # if keys[1] and not keys[3]:
-    #     Car.steer(-30)
-    # else:
-    #     Car.steer(0)
-    
-    # if keys[3] and not keys[1]:
-    #     Car.steer(30)
-    # else:
-    #     Car.steer(0)
-
-    # if keys[2] and not keys[0]:
-    #     Car.drive(-2.5)
-    # else:
-    #     Car.drive(0)
- 
-# # Use $ ls /dev/tty* to find the serial port connected to Arduino
-               # Linux
-# #Car = Arduino("/dev/tty.usbserial-2140", 115200)     # Mac
-# pygame.init()
-# keys = [False, False, False, False]
-while True:
-    with Listener(
-            on_press=on_press,
-            on_release=on_release) as listener:
-        listener.join()
-
-        # if keys[0] and not keys[2]:
-        #     Car.drive(2.1)
-        # else: 
-        #     Car.drive(0)
-        
-        # if keys[1] and not keys[3]:
-        #     Car.steer(-30)
-        # else:
-        #     Car.steer(0)
-        
-        # if keys[3] and not keys[1]:
-        #     Car.steer(30)
-        # else:
-        #     Car.steer(0)
-
-        # if keys[2] and not keys[1]:
-        #     Car.drive(-2.1)
-        # else:
-        #     Car.drive(0)
-
-#     # command = input("Enter a command:\n")
-#     # if command == 's':
-#     #     angle = input("Enter a steering angle (-30 ~ 30):\n")
-#     #     Car.steer(float(angle))
-#     # elif command == 'd':
-#     #     speed = input("Enter a drive speed (-3.0 ~ 3.0):\n")
-#     #     Car.drive(float(speed))
-#     # elif command == 'z':
-#     #     pwm = input("Enter a PWM value (~1500):\n")
-#     #     Car.zero(int(pwm))
-#     # elif command == 'p':
-#     #     flag = input("Enter 1 to turn on PID and 0 to turn off:\n")
-#     #     Car.pid(int(flag))
-#     # elif command == 'e':
-#     #     print(int(Car.encoder().strip()))   # need to strip character of \r or \n
-#     # elif command == 'q':
-#     #     if Car.CarConnected:
-#     #         del Car
-#     #     break
-
+# while True:
+with Listener(
+        on_press=on_press,
+        on_release=on_release) as listener:
+    listener.join()
 
