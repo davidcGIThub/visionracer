@@ -44,10 +44,10 @@ Car.pid(1)          # Use PID control
 # loop over frames from Realsense
 while True:
     (time, rgb, depth, accel, gyro) = rs.getData()
-    detector.process(rgb)
+    # detector.process(rgb)
 
-    # cv2.imshow("RGB", rgb)
-    # cv2.imshow("Depth", depth)
+    cv2.imshow("RGB", rgb)
+    cv2.imshow("Depth", depth)
 
 
     '''
