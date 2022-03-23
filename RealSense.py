@@ -23,7 +23,7 @@ class RealSense:
         if Resolution == RS_720P:
             rgbSize = [1280, 720]
             depthSize = [1280, 720]
-       	elif Resolution == RS_1080P:
+        elif Resolution == RS_1080P:
             rgbSize = [1920, 1080]
             depthSize = [1280, 720]     # depth camera only allows upto 720P
         else:
