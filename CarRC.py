@@ -28,20 +28,20 @@ from Arduino import Arduino
 # import pygame
 # from pygame.locals import *
 from pynput.keyboard import Key, Listener
-Car = Arduino("/dev/ttyUSB0", 115200)  
+
 keys = [False, False, False, False]
 
 def on_press(key):
     print('{0} pressed'.format(
         key))
     if key==Key.up:
-        Car.drive(1.5)
+        keys[0]=True
     elif key==Key.left:
-        Car.steer(-30)
+        keys[1]=True
     elif key==Key.down:
         keys[2]=True
     elif key==Key.right:
-        Car.drive(-1.5)
+        keys[3]=True
 
 def on_release(key):
     print('{0} release'.format(
@@ -50,15 +50,15 @@ def on_release(key):
         # Stop listener
         return False
     if key==Key.up:
-        Car.drive(0)
+        keys[0]=False
     elif key==Key.left:
         keys[1]=False
     elif key==Key.down:
         keys[2]=False
     elif key==Key.right:
-        Car.drive(0)    
+        keys[3]=False    
 # # Use $ ls /dev/tty* to find the serial port connected to Arduino
-              # Linux
+Car = Arduino("/dev/ttyUSB0", 115200)                # Linux
 # #Car = Arduino("/dev/tty.usbserial-2140", 115200)     # Mac
 # pygame.init()
 # keys = [False, False, False, False]
@@ -66,27 +66,27 @@ while True:
     with Listener(
             on_press=on_press,
             on_release=on_release) as listener:
-        listener.join()
+        # listener.join()
 
-        # if keys[0]:
-        #     Car.drive(1.5)
-        # else:
-        #     Car.drive(0)
+        if keys[0] and not keys[2]:
+            Car.drive(2.1)
+        else:
+            Car.drive(0)
         
-        # if keys[1]:
-        #     Car.steer(-30)
-        # else:
-        #     Car.steer(0)
+        if keys[1] and not keys[3]:
+            Car.steer(-30)
+        else:
+            Car.steer(0)
         
-        # if keys[3]:
-        #     Car.steer(30)
-        # else:
-        #     Car.steer(0)
+        if keys[3] and not keys[1]:
+            Car.steer(30)
+        else:
+            Car.steer(0)
 
-        # if keys[2]:
-        #     Car.drive(-1.5)
-        # else:
-        #     Car.drive(0)
+        if keys[2] and not keys[1]:
+            Car.drive(-2.1)
+        else:
+            Car.drive(0)
 
 #     # command = input("Enter a command:\n")
 #     # if command == 's':
