@@ -59,7 +59,7 @@ while True:
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
-    print(velocity_command, np.degrees(angle_command))
+    print(velocity_command, angle_command)
     '''
     Add your code to process rgb, depth, IMU data
     '''

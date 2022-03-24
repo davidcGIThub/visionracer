@@ -20,6 +20,7 @@ class ReactiveController:
         self._kp_theta = angle_gain
 
     def proportional_control(self, stream_length, desired_direction):
-        velocity_commmand = np.min(self._v_max, self._kp_v * stream_length)
-        wheel_angle_command = np.clip(np.arctan2(self._L*desired_direction/self._lr)  ,-self._delta_max,self._delta_max)
-        return velocity_commmand, wheel_angle_command
+        velocity_commmand = np.min((self._v_max, self._kp_v * stream_length))
+        # wheel_angle_command = np.clip(np.arctan2(self._L*desired_direction, self._lr)  ,-self._delta_max,self._delta_max)
+        wheel_angle_command = desired_direction * self._kp_theta
+        return velocity_commmand, np.degrees(wheel_angle_command)

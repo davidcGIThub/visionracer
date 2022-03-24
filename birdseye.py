@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from direction_vector_generator import DirectionVectorGenerator
+from reactive_controller import ReactiveController
 
 class birdsEye:
     def __init__(self, file=None, img_height=480) -> None:
@@ -124,6 +125,7 @@ if __name__ == "__main__":
     # cv2.imshow("test", img)
     # processor.process(img)
     intersects = DirectionVectorGenerator(21, (640, processor.height))
+    controller = ReactiveController(velocity_gain=2.5/640, angle_gain=1)
     img_file = "./pictures/"
     for file in os.listdir(img_file):
         img = cv2.imread(img_file+file)
@@ -132,7 +134,11 @@ if __name__ == "__main__":
         max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.lanes+processor.cones)
         mask = cv2.resize(mask, (640,316))
         cv2.imshow("obstacles", processor.combined+mask)
-        k= cv2.waitKey()
+        k= cv2.waitKey(1)
         if k == ord("q"):
             break
+
+        # Control
+        velocity_command, angle_command = controller.proportional_control(max_stream_length, stream_angle) 
+        print(velocity_command, angle_command)
     
