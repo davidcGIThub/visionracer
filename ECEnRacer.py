@@ -48,7 +48,7 @@ Car.pid(1)          # Use PID control
 # You can use kd and kp commands to change KP and KD values.  Default values are good.
 # loop over frames from Realsense
 while True:
-    (time, rgb, depth, accel, gyro) = rs.getData()
+    (t, rgb, depth, accel, gyro) = rs.getData()
 
     # Detect obstacles
     tic = time.time()
