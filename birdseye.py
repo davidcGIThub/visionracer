@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from direction_vector_generator import DirectionVectorGenerator
 
 class birdsEye:
     def __init__(self, file=None, img_height=480) -> None:
@@ -11,6 +12,7 @@ class birdsEye:
         
         self.top_crop = int(0.3 * img_height)
         self.bottom_crop = int(0.96 * img_height)
+        self.height = self.bottom_crop - self.top_crop
 
     def process(self, img):
         self.colorSegment(img)
@@ -118,13 +120,15 @@ if __name__ == "__main__":
     import os
     print(os.getcwd())
     processor = birdsEye(file = "./visionracer/transform2.npz")
-    img = cv2.imread("./pictures/img3.png")
-    cv2.imshow("test", img)
-    processor.process(img)
+    # img = cv2.imread("./pictures/img3.png")
+    # cv2.imshow("test", img)
+    # processor.process(img)
+    intersects = DirectionVectorGenerator(11, (640, processor.height))
     img_file = "./pictures/"
     for file in os.listdir(img_file):
         img = cv2.imread(img_file+file)
         cv2.imshow("test", img)
         processor.process(img)
+        intersects.check_intersections(processor.lanes+processor.cones)
         cv2.waitKey()
     
