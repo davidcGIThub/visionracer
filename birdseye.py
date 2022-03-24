@@ -123,12 +123,14 @@ if __name__ == "__main__":
     # img = cv2.imread("./pictures/img3.png")
     # cv2.imshow("test", img)
     # processor.process(img)
-    intersects = DirectionVectorGenerator(11, (640, processor.height))
+    intersects = DirectionVectorGenerator(21, (640, processor.height))
     img_file = "./pictures/"
     for file in os.listdir(img_file):
         img = cv2.imread(img_file+file)
         cv2.imshow("test", img)
         processor.process(img)
-        intersects.check_intersections(processor.lanes+processor.cones)
+        max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.lanes+processor.cones)
+        cv2.imshow("stream", mask)
+        cv2.imshow("obstacles", processor.lanes+processor.cones)
         cv2.waitKey()
     

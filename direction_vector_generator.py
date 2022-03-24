@@ -20,11 +20,11 @@ class DirectionVectorGenerator:
     def generate_masks_and_angles(self):
         # Generate masks and their angles
         xs = np.linspace(0,self._image_width,self._resolution)
-        blank = np.zeros((self._image_height, self._image_width))
+        blank = np.zeros((self._image_height, self._image_width), np.uint8)
         for x in xs:
             endpoint = (int(x), 0)
             mask = np.copy(blank)
-            cv2.line(mask, self._origin, endpoint, 255, 1)
+            cv2.line(mask, self._origin, endpoint, 255, 4)
             # cv2.imshow("mask", mask)
             # cv2.waitKey(0)
             self._masks.append(mask)
@@ -36,7 +36,9 @@ class DirectionVectorGenerator:
 
     def check_intersections(self,mask,img):
         # Check for intersects with each ray
+        img[0,:] = 255
         intersects = cv2.bitwise_and(mask, img)
+        cv2.imshow("check", intersects)
         return intersects
         
         
@@ -46,13 +48,13 @@ class DirectionVectorGenerator:
         for i in range(number_of_angles):
             mask = self._masks[i]
             intersections = self.check_intersections(mask,image)
-            intersection_locations = np.vstack(np.where(intersections == True))
-            difference = intersection_locations - np.asarray(self._origin)
+            intersection_locations = np.vstack(np.where(intersections > 0))
+            difference = intersection_locations.T - np.asarray(self._origin)
             intersection_distances = np.linalg.norm(difference,2,1)
-            closest_point = intersection_locations[np.argmin(intersection_distances)]
+            closest_point = intersection_locations[:,np.argmin(intersection_distances)]
             stream_length = np.linalg.norm(closest_point - np.asarray(self._origin),2,0)
             stream_lengths[i] = stream_length
         max_stream_length = np.max(stream_lengths)
         index_max_stream = np.argmax(stream_lengths)
         stream_angle = self._angles[index_max_stream]
-        return max_stream_length, stream_angle
+        return max_stream_length, stream_angle, self._masks[index_max_stream]
