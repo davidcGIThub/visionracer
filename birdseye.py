@@ -132,5 +132,7 @@ if __name__ == "__main__":
         max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.lanes+processor.cones)
         mask = cv2.resize(mask, (640,316))
         cv2.imshow("obstacles", processor.combined+mask)
-        cv2.waitKey(1)
+        k= cv2.waitKey()
+        if k == ord("q"):
+            break
     
