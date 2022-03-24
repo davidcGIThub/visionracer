@@ -1,3 +1,4 @@
+from multiprocessing.reduction import duplicate
 import cv2
 
 """
@@ -11,7 +12,7 @@ class DirectionVectorGenerator:
     def __init__(self , resolution=11, image_size=(640,480)):
         self._resolution = resolution
         self._image_width = image_size[0]
-        self._image_height = image_size[1]
+        self._image_height = image_size[0]
         self._origin = (int(self._image_width/2),self._image_height)
         self._masks = []
         self._angles = []
@@ -37,8 +38,10 @@ class DirectionVectorGenerator:
     def check_intersections(self,mask,img):
         # Check for intersects with each ray
         img[0,:] = 255
+        img = cv2.resize(img, (self._image_width, self._image_width))
         intersects = cv2.bitwise_and(mask, img)
         cv2.imshow("check", intersects)
+        cv2.waitKey(1)
         return intersects
         
         
@@ -49,12 +52,29 @@ class DirectionVectorGenerator:
             mask = self._masks[i]
             intersections = self.check_intersections(mask,image)
             intersection_locations = np.vstack(np.where(intersections > 0))
-            difference = intersection_locations.T - np.asarray(self._origin)
+            difference = np.flip(intersection_locations,axis=0).T - np.asarray(self._origin)
             intersection_distances = np.linalg.norm(difference,2,1)
             closest_point = intersection_locations[:,np.argmin(intersection_distances)]
-            stream_length = np.linalg.norm(closest_point - np.asarray(self._origin),2,0)
-            stream_lengths[i] = stream_length
+            stream_lengths[i] = np.clip(intersection_distances.min(), 0, self._image_height)
         max_stream_length = np.max(stream_lengths)
         index_max_stream = np.argmax(stream_lengths)
-        stream_angle = self._angles[index_max_stream]
+         
+        # Check for duplicates, choose the smallest angle among them
+        unique,counts = np.unique(stream_lengths, return_counts=True)
+
+        duplicates = unique[counts>1]
+        
+        # Only care about duplicates of the max length
+        if (duplicates == max_stream_length).any():
+            idx = stream_lengths == max(duplicates)
+            duplicate_angles = np.array(self._angles)[idx]
+            stream_angle = min(duplicate_angles, key=abs)
+            print(stream_angle, self._angles[index_max_stream])
+        else:
+            stream_angle = self._angles[index_max_stream]
+        
+        
+        
+
         return max_stream_length, stream_angle, self._masks[index_max_stream]
+
