@@ -53,10 +53,12 @@ while True:
     detector.process(rgb)
 
     # Generate an optimal path
-    length, angle, _ = generator.get_direction_vector(detector.lanes)
+    length, angle, mask = generator.get_direction_vector(detector.lanes)
+    mask = cv2.resize(mask, (640,316))
+    cv2.imshow("obstacles", detector.combined+mask)
     
     # Compute control 
-    velocity_command, angle_command = controller.proportional_control(length, angle) 
+    # velocity_command, angle_command = controller.proportional_control(length, angle) 
 
     '''
     Add your code to process rgb, depth, IMU data
