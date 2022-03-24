@@ -5,7 +5,7 @@ Finds the longest vector without obstruction from the bottom center
 of an image.
 """
 import numpy as np
-from scipy.optimize import fsolve
+import scipy
 
 class DirectionVectorGenerator:
     def __init__(self , resolution=11, image_size=(640,480)):
@@ -34,3 +34,19 @@ class DirectionVectorGenerator:
                 angle = 0
             self._angles.append(angle)
         
+    def get_direction_vector(self,image):
+        number_of_angles = len(self._angles)
+        stream_lengths = np.zeros(number_of_angles)
+        for i in range(number_of_angles):
+            mask = self._masks[i]
+            intersections = self.check_intersections(mask,image)
+            intersection_locations = np.vstack(np.where(intersections == True))
+            difference = intersection_locations - np.asarray(self._origin)
+            intersection_distances = np.linalg.norm(difference,2,1)
+            closest_point = intersection_locations[np.argmin(intersection_distances)]
+            stream_length = np.linalg.norm(closest_point - np.asarray(self._origin),2,0)
+            stream_lengths[i] = stream_length
+        max_stream_length = np.max(stream_lengths)
+        index_max_stream = np.argmax(stream_lengths)
+        stream_angle = self._angles[index_max_stream]
+        return max_stream_length, stream_angle
