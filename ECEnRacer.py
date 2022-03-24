@@ -54,14 +54,14 @@ while True:
 
     # Generate an optimal path
     length, angle, mask = generator.get_direction_vector(detector.combined)
-    mask = cv2.resize(mask, (1920,712))
-    cv2.imshow("obstacles", detector.combined+mask)
+    # mask = cv2.resize(mask, (1920,712))
+    # cv2.imshow("obstacles", detector.combined+mask)
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     print(velocity_command, angle_command)
     Car.steer(angle_command)
-    Car.drive(velocity_command)
+    # Car.drive(velocity_command)
     '''
     Add your code to process rgb, depth, IMU data
     '''

@@ -24,28 +24,20 @@ class birdsEye:
         
 
     def colorSegment(self, img):
-        # Mask green portion of car that is visible
-        # img[460:,:,:] = 0
-        # img[:150,:,:] = 0
         img = img[self.top_crop:self.bottom_crop,:,:]
+
         # Split into bgr and hsv
         cv2.imshow("test", img)
         self.bgr = img
         self.hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         b,g,r = cv2.split(self.bgr)
         h,s,v = cv2.split(self.hsv)
-        # cv2.imshow("b", b)
-        # cv2.imshow("s", s)
         
         # Threshold on s and b
-        # S: blue=100, orange=240
         _, threshS = cv2.threshold(s, 80, 255, cv2.THRESH_BINARY)
         _, threshB = cv2.threshold(b, 130, 255, cv2.THRESH_BINARY)
         _, threshG = cv2.threshold(g, 135, 255, cv2.THRESH_BINARY)
         _, threshR = cv2.threshold(r, 190, 255, cv2.THRESH_BINARY)
-        # cv2.imshow("s_thresh", threshS)
-        # cv2.imshow("g_thresh", threshG)
-        # cv2.imshow("b_thresh", threshB)
 
         # Remove noise
         # morphS = cv2.morphologyEx(threshS, cv2.MORPH_OPEN, self.kernel)
@@ -57,9 +49,6 @@ class birdsEye:
         self.cones = cv2.bitwise_and(threshR, threshS)
         self.lanes = cv2.morphologyEx(self.lanes, cv2.MORPH_OPEN, self.kernel)
         self.cones = cv2.morphologyEx(self.cones, cv2.MORPH_OPEN, self.kernel)
-        # cv2.imshow("lanes", self.lanes)
-        # cv2.imshow("cones", self.cones)
-        # cv2.imshow("obstacles", self.lanes+self.cones)
 
 
     def lane_lines(self):
