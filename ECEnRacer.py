@@ -33,7 +33,7 @@ from reactive_controller import ReactiveController
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=1080)
 generator = DirectionVectorGenerator(15, (1920,1080))
-controller = ReactiveController(velocity_gain=2.5/1080)
+controller = ReactiveController(velocity_gain=2/1920)
 
 rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
@@ -60,6 +60,7 @@ while True:
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     print(velocity_command, angle_command)
+    Car.steer(angle_command)
     '''
     Add your code to process rgb, depth, IMU data
     '''
