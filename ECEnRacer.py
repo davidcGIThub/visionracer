@@ -54,7 +54,7 @@ while True:
 
     # Generate an optimal path
     length, angle, mask = generator.get_direction_vector(detector.combined)
-    mask = cv2.resize(mask, (640,316))
+    mask = cv2.resize(mask, (712,1920))
     cv2.imshow("obstacles", detector.combined+mask)
     
     # Compute control 
