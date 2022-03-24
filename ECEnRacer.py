@@ -27,9 +27,13 @@ import numpy as np
 import imutils
 import cv2
 from birdseye import birdsEye
+from direction_vector_generator import DirectionVectorGenerator
+from reactive_controller import ReactiveController
 
-# Instantiate lane detection
+# Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=1080)
+generator = DirectionVectorGenerator(15, (1920,1080))
+controller = ReactiveController(velocity_gain=2/1080)
 
 rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
@@ -44,11 +48,15 @@ Car.pid(1)          # Use PID control
 # loop over frames from Realsense
 while True:
     (time, rgb, depth, accel, gyro) = rs.getData()
+
+    # Detect obstacles
     detector.process(rgb)
 
-    # cv2.imshow("RGB", rgb)
-    # cv2.imshow("Depth", depth)
-
+    # Generate an optimal path
+    length, angle, _ = generator.get_direction_vector(detector.lanes)
+    
+    # Compute control 
+    velocity_command, angle_command = controller.proportional_control(length, angle) 
 
     '''
     Add your code to process rgb, depth, IMU data

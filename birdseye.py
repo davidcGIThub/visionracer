@@ -20,6 +20,7 @@ class birdsEye:
         # self.homography()
         
         # cv2.waitKey(1)
+        
 
     def colorSegment(self, img):
         # Mask green portion of car that is visible
@@ -57,25 +58,24 @@ class birdsEye:
         self.cones = cv2.morphologyEx(self.cones, cv2.MORPH_OPEN, self.kernel)
         # cv2.imshow("lanes", self.lanes)
         # cv2.imshow("cones", self.cones)
-        cv2.imshow("obstacles", self.lanes+self.cones)
+        # cv2.imshow("obstacles", self.lanes+self.cones)
 
 
     def lane_lines(self):
         lines = cv2.HoughLinesP(self.lanes, 1, np.pi/180, 30, maxLineGap=60)
-        self.lanes_copy = np.copy(self.lanes)
-        self.lanes_copy = cv2.cvtColor(self.lanes_copy, cv2.COLOR_GRAY2BGR)
+        self.lanes_filled = np.copy(self.lanes)
         # draw Hough lines
         if lines is not None:
             for line in lines:
                 x1, y1, x2, y2 = line[0]
-                cv2.line(self.lanes_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                cv2.line(self.lanes_filled, (x1, y1), (x2, y2), 255, 3)
         
-        cv2.imshow("lane draw",self.lanes_copy)
+        self.combined = self.lanes_filled + self.cones
 
     def homography(self):
         # Apply transformation to generate birdseye view
         IMAGE_H, IMAGE_W = self.lanes.shape
-        warped_img = cv2.warpPerspective(self.lanes_copy, self.transform, (IMAGE_W, IMAGE_H))
+        warped_img = cv2.warpPerspective(self.lanes_filled, self.transform, (IMAGE_W, IMAGE_H))
         # cv2.imshow("birdseye", warped_img)
 
     def homographyCalib(self):
@@ -131,7 +131,6 @@ if __name__ == "__main__":
         processor.process(img)
         max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.lanes+processor.cones)
         mask = cv2.resize(mask, (640,316))
-        cv2.imshow("stream", mask)
-        cv2.imshow("obstacles", processor.lanes+processor.cones+mask)
-        cv2.waitKey()
+        cv2.imshow("obstacles", processor.combined+mask)
+        cv2.waitKey(1)
     

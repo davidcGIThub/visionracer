@@ -25,7 +25,7 @@ class DirectionVectorGenerator:
         for x in xs:
             endpoint = (int(x), 0)
             mask = np.copy(blank)
-            cv2.line(mask, self._origin, endpoint, 255, 4)
+            cv2.line(mask, self._origin, endpoint, 255, 10)
             # cv2.imshow("mask", mask)
             # cv2.waitKey(0)
             self._masks.append(mask)
@@ -40,8 +40,6 @@ class DirectionVectorGenerator:
         img[0,:] = 255
         img = cv2.resize(img, (self._image_width, self._image_width))
         intersects = cv2.bitwise_and(mask, img)
-        cv2.imshow("check", intersects)
-        cv2.waitKey(1)
         return intersects
         
         
