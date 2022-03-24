@@ -61,6 +61,7 @@ while True:
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     print(velocity_command, angle_command)
     Car.steer(angle_command)
+    Car.drive(velocity_command)
     '''
     Add your code to process rgb, depth, IMU data
     '''
