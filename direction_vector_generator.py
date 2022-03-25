@@ -59,9 +59,9 @@ class DirectionVectorGenerator:
          
         # Check for duplicates, choose the smallest angle among them
         unique,counts = np.unique(stream_lengths, return_counts=True)
-        print(stream_lengths)
 
         duplicates = unique[counts>1]
+        print(duplicates)
         
         # Only care about duplicates of the max length
         if (duplicates == max_stream_length).any():
