@@ -68,7 +68,7 @@ class birdsEye:
     def homography(self):
         # Apply transformation to generate birdseye view
         IMAGE_H, IMAGE_W = self.lanes.shape
-        warped_img = cv2.warpPerspective(self.lanes_filled, self.transform, (IMAGE_W, IMAGE_H))
+        self.warped_img = cv2.warpPerspective(self.combined, self.transform, (IMAGE_W, IMAGE_H))
         # cv2.imshow("birdseye", warped_img)
 
     def homographyCalib(self):
