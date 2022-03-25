@@ -28,7 +28,7 @@ while True:
 
     if writer is None and recording is True:
         # initialize our video writer
-        writer = cv2.VideoWriter('Video.avi', cv2.VideoWriter_fourcc(*'MJPG'), 15, (rgb.shape[1], rgb.shape[0]), True)
+        writer = cv2.VideoWriter('Video.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 15, (rgb.shape[1], rgb.shape[0]), True)
 
     cv2.imshow("RGB", rgb)
     # cv2.imshow("Depth", depth)
