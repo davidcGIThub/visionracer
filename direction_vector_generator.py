@@ -66,8 +66,9 @@ class DirectionVectorGenerator:
         if (duplicates == max_stream_length).any():
             idx = stream_lengths == max(duplicates)
             duplicate_angles = self._angles[idx]
-            print(duplicate_angles)
+            print(min(duplicate_angles, key=abs))
             stream_angle = min(duplicate_angles, key=abs)
+            
         else:
             stream_angle = self._angles[index_max_stream]
         
