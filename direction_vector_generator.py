@@ -24,7 +24,7 @@ class DirectionVectorGenerator:
         for x in xs:
             endpoint = (int(x), 0)
             mask = np.copy(blank)
-            cv2.line(mask, self._origin, endpoint, 255, 1)
+            cv2.line(mask, self._origin, endpoint, 255, 2)
             # cv2.imshow("mask", mask)
             # cv2.waitKey(0)
             self._masks.append(mask)
