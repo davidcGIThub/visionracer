@@ -10,8 +10,8 @@ file = "Video.avi"
 video = cv2.VideoCapture(file)
 processor = birdsEye(file = "./visionracer/transform2.npz")
 
-intersects = DirectionVectorGenerator(11, (640, processor.height))
-controller = ReactiveController(velocity_gain=2.5/640, angle_gain=1)
+intersects = DirectionVectorGenerator(51, (640, processor.height))
+controller = ReactiveController(velocity_gain=2.5/640, angle_gain=30/46)
 img_file = "./pictures/"
 while(video.isOpened()):
     ret, img = video.read()

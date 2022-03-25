@@ -11,7 +11,7 @@ class DirectionVectorGenerator:
     def __init__(self , resolution=11, image_size=(640,480)):
         self._resolution = resolution
         self._image_width = image_size[0]
-        self._image_height = image_size[0]
+        self._image_height = image_size[1]
         self._origin = (int(self._image_width/2),self._image_height)
         self._masks = []
         self._angles = []
@@ -38,7 +38,7 @@ class DirectionVectorGenerator:
     def check_intersections(self,mask,img):
         # Check for intersects with each ray
         img[0,:] = 255
-        img = cv2.resize(img, (self._image_width, self._image_width))
+        # img = cv2.resize(img, (self._image_width, self._image_width))
         intersects = cv2.bitwise_and(mask, img)
         return intersects
         
@@ -53,7 +53,7 @@ class DirectionVectorGenerator:
             difference = np.flip(intersection_locations,axis=0).T - np.asarray(self._origin)
             intersection_distances = np.linalg.norm(difference,2,1)
             closest_point = intersection_locations[:,np.argmin(intersection_distances)]
-            stream_lengths[i] = np.clip(intersection_distances.min(), 0, self._image_height)
+            stream_lengths[i] = np.clip(intersection_distances.min(), 0, self._image_height*8/9)
         max_stream_length = np.max(stream_lengths)
         index_max_stream = np.argmax(stream_lengths)
          
@@ -67,13 +67,18 @@ class DirectionVectorGenerator:
             idx = stream_lengths == max(duplicates)
             duplicate_angles = self._angles[idx]
             index_max_stream = np.argmin(abs(duplicate_angles))
-            
-        stream_angle = self._angles[index_max_stream]
+            stream_angle = duplicate_angles[index_max_stream]
+            mask = self._masks[np.where(self._angles==stream_angle)[0][0]]
+        else:           
+            stream_angle = self._angles[index_max_stream]
+            mask = self._masks[index_max_stream]
         
         
         weights = np.clip(stream_lengths, 0, self._image_height/2)
         avg = np.average(self._angles, weights=weights)
-        print("avg:", np.degrees(avg))
-        print("angle", np.degrees(stream_angle))
-        return max_stream_length, stream_angle+avg*4, self._masks[index_max_stream]
+        # print("avg:", np.degrees(avg))
+        # print("angle", np.degrees(stream_angle))
+        cv2.imshow("mask", mask)
+        return max_stream_length, stream_angle, mask
+        
 
