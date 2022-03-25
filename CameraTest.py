@@ -19,9 +19,9 @@ from RealSense import *
 import cv2
 import imutils	
 
-rs = RealSense("/dev/video2", RS_1080P)    # RS_VGA, RS_720P, or RS_1080P
+rs = RealSense("/dev/video2", RS_VGA)    # RS_VGA, RS_720P, or RS_1080P
 writer = None
-recording = False
+recording = True
 frameIndex = 0
 while True:
     (time, rgb, depth, accel, gyro) = rs.getData()
@@ -31,7 +31,7 @@ while True:
         writer = cv2.VideoWriter('Video.avi', cv2.VideoWriter_fourcc(*'MJPG'), 15, (rgb.shape[1], rgb.shape[0]), True)
 
     cv2.imshow("RGB", rgb)
-    cv2.imshow("Depth", depth)
+    # cv2.imshow("Depth", depth)
     
     if recording == True:
         # write the output frame to disk
