@@ -32,6 +32,7 @@ from birdseye import birdsEye
 from direction_vector_generator import DirectionVectorGenerator
 from reactive_controller import ReactiveController
 import time
+from maskgen import mask as m
 
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=480)
@@ -63,7 +64,8 @@ while True:
     length, angle, mask = generator.get_direction_vector(detector.combined)
     print(length)
     mask = cv2.resize(mask, (640,316))
-    cv2.imshow("obstacles", detector.combined+mask)
+    angle_show = m(angle_command)
+    cv2.imshow("obstacles", detector.combined+angle_show)
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
