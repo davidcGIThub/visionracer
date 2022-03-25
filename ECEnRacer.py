@@ -32,7 +32,7 @@ from reactive_controller import ReactiveController
 import time
 
 # Instantiate lane detection, angle detector and controller
-detector = birdsEye(img_height=640)
+detector = birdsEye(img_height=480)
 generator = DirectionVectorGenerator(15, (640,detector.height))
 controller = ReactiveController(velocity_gain=1.5/640)
 
@@ -56,7 +56,6 @@ while True:
     toc1 = time.time()
 
     # Generate an optimal path
-    print(detector.combined.shape)
     length, angle, mask = generator.get_direction_vector(detector.combined)
     toc2 = time.time()
     mask = cv2.resize(mask, (640,316))
