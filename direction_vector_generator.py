@@ -61,12 +61,12 @@ class DirectionVectorGenerator:
         unique,counts = np.unique(stream_lengths, return_counts=True)
 
         duplicates = unique[counts>1]
-        print(duplicates)
         
         # Only care about duplicates of the max length
         if (duplicates == max_stream_length).any():
             idx = stream_lengths == max(duplicates)
             duplicate_angles = self._angles[idx]
+            print(duplicate_angles)
             stream_angle = min(duplicate_angles, key=abs)
         else:
             stream_angle = self._angles[index_max_stream]
