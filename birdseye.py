@@ -51,6 +51,8 @@ class birdsEye:
         self.lanes = cv2.morphologyEx(self.lanes, cv2.MORPH_OPEN, self.kernel)
         self.cones = cv2.morphologyEx(self.cones, cv2.MORPH_OPEN, self.kernel)
         self.combined = self.cones + self.lanes
+        kernel = np.ones((30,30), np.uint8)
+        self.combined = cv2.dilate(self.combined,kernel)
 
     def lane_lines(self):
         lines = cv2.HoughLinesP(self.lanes, 1, np.pi/180, 30, maxLineGap=60)
