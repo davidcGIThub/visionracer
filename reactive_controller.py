@@ -23,5 +23,6 @@ class ReactiveController:
         velocity_commmand = np.min((self._v_max, self._kp_v * stream_length))
         # wheel_angle_command = np.clip(np.arctan2(self._L*desired_direction, self._lr)  ,-self._delta_max,self._delta_max)
         # wheel_angle_command = desired_direction * self._kp_theta
-        wheel_angle_command = desired_direction**3 * 0.000308 
-        return velocity_commmand, np.degrees(wheel_angle_command)
+        wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00021369 + np.rad2deg(desired_direction)/5
+        print("commanded angle: ", wheel_angle_command)
+        return velocity_commmand, wheel_angle_command
