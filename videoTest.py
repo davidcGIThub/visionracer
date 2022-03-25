@@ -5,8 +5,7 @@ from reactive_controller import ReactiveController
 from birdseye import birdsEye
 import time
 
-file = "Video.avi"
-file = "Video.avi"
+file = "../Video.avi"
 video = cv2.VideoCapture(file)
 processor = birdsEye(file = "transform2.npz")
 
@@ -18,6 +17,7 @@ while(video.isOpened()):
     if ret:
         cv2.imshow("test", img)
         processor.process(img)
+        processor.homography()
         max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.combined)
         mask = cv2.resize(mask, (640,316))
         cv2.imshow("obstacles", processor.combined+mask)
