@@ -64,7 +64,7 @@ while True:
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     toc3 = time.time()
-    print(tic-toc1, toc1-toc2, toc2-toc3)
+    # print(tic-toc1, toc1-toc2, toc2-toc3)
     Car.steer(angle_command)
     # Car.drive(velocity_command)
     '''

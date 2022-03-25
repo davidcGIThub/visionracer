@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from direction_vector_generator import DirectionVectorGenerator
 from reactive_controller import ReactiveController
+import time
 
 class birdsEye:
     def __init__(self, file=None, img_height=480) -> None:
@@ -16,9 +17,13 @@ class birdsEye:
         self.height = self.bottom_crop - self.top_crop
 
     def process(self, img):
+        tic = time.time()
         self.colorSegment(img)
+        toc1 = time.time()
         self.lane_lines()
+        toc2 = time.time()
         # self.homography()
+        print(toc1-tic, toc2-toc1)
         
         # cv2.waitKey(1)
         
