@@ -121,7 +121,7 @@ if __name__ == "__main__":
         img = cv2.imread(img_file+file)
         cv2.imshow("test", img)
         processor.process(img)
-        max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.lanes+processor.cones)
+        max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.combined)
         mask = cv2.resize(mask, (640,316))
         cv2.imshow("obstacles", processor.combined+mask)
         # Control
