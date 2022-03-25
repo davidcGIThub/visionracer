@@ -66,7 +66,7 @@ while True:
     toc3 = time.time()
     print(tic-toc1, toc1-toc2, toc2-toc3)
     Car.steer(angle_command)
-    # Car.drive(velocity_command)
+    Car.drive(velocity_command)
     '''
     Add your code to process rgb, depth, IMU data
     '''
