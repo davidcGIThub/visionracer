@@ -34,7 +34,7 @@ import time
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=1080)
 generator = DirectionVectorGenerator(7, (1920,1080))
-controller = ReactiveController(velocity_gain=2/1920)
+controller = ReactiveController(velocity_gain=1.5/1920)
 
 rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
@@ -58,15 +58,15 @@ while True:
     # Generate an optimal path
     length, angle, mask = generator.get_direction_vector(detector.combined)
     toc2 = time.time()
-    # mask = cv2.resize(mask, (1920,712))
-    # cv2.imshow("obstacles", detector.combined+mask)
+    mask = cv2.resize(mask, (1920,712))
+    cv2.imshow("obstacles", detector.combined+mask)
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     toc3 = time.time()
     print(tic-toc1, toc1-toc2, toc2-toc3)
     Car.steer(angle_command)
-    # Car.drive(velocity_command)
+    Car.drive(velocity_command)
     '''
     Add your code to process rgb, depth, IMU data
     '''
