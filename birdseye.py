@@ -17,13 +17,9 @@ class birdsEye:
         self.height = self.bottom_crop - self.top_crop
 
     def process(self, img):
-        tic = time.time()
         self.colorSegment(img)
-        toc1 = time.time()
-        self.lane_lines()
-        toc2 = time.time()
+        # self.lane_lines()
         # self.homography()
-        print(toc1-tic, toc2-toc1)
         
         # cv2.waitKey(1)
         
@@ -54,7 +50,7 @@ class birdsEye:
         self.cones = cv2.bitwise_and(threshR, threshS)
         self.lanes = cv2.morphologyEx(self.lanes, cv2.MORPH_OPEN, self.kernel)
         self.cones = cv2.morphologyEx(self.cones, cv2.MORPH_OPEN, self.kernel)
-
+        self.combined = self.cones + self.lanes
 
     def lane_lines(self):
         lines = cv2.HoughLinesP(self.lanes, 1, np.pi/180, 30, maxLineGap=60)
