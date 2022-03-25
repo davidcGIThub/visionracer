@@ -28,11 +28,11 @@ class ReactiveController:
         wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00021369 + np.rad2deg(desired_direction)/5 + 7
         
         self.command_history.append(wheel_angle_command)
-        if len(self.command_history) > 4:
+        if len(self.command_history) > 5:
             self.command_history.pop(0)
 
         wheel_angle_command = self.lowpass_filter()
-        self.command_history[-1] = wheel_angle_command
+        # self.command_history[-1] = wheel_angle_command
 
         print("commanded angle: ", wheel_angle_command)
         return velocity_commmand, wheel_angle_command
