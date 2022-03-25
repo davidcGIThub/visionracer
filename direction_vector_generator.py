@@ -24,7 +24,7 @@ class DirectionVectorGenerator:
         for x in xs:
             endpoint = (int(x), 0)
             mask = np.copy(blank)
-            cv2.line(mask, self._origin, endpoint, 255, 10)
+            cv2.line(mask, self._origin, endpoint, 255, 1)
             # cv2.imshow("mask", mask)
             # cv2.waitKey(0)
             self._masks.append(mask)
@@ -33,6 +33,7 @@ class DirectionVectorGenerator:
             else:
                 angle = 0
             self._angles.append(angle)
+        self._angles = np.array(self._angles)
 
     def check_intersections(self,mask,img):
         # Check for intersects with each ray
@@ -64,13 +65,13 @@ class DirectionVectorGenerator:
         # Only care about duplicates of the max length
         if (duplicates == max_stream_length).any():
             idx = stream_lengths == max(duplicates)
-            duplicate_angles = np.array(self._angles)[idx]
+            duplicate_angles = self._angles[idx]
             stream_angle = min(duplicate_angles, key=abs)
         else:
             stream_angle = self._angles[index_max_stream]
         
         
-        
-
+        weights = np.clip(stream_lengths, 0, self._image_height/2)
+        print("avg:", np.degrees(np.average(self._angles, weights=weights)))
         return max_stream_length, stream_angle, self._masks[index_max_stream]
 
