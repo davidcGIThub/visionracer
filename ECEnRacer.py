@@ -33,7 +33,7 @@ import time
 
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=480)
-generator = DirectionVectorGenerator(15, (640,detector.height))
+generator = DirectionVectorGenerator(21, (640,detector.height))
 controller = ReactiveController(velocity_gain=1.5/640)
 
 rs = RealSense("/dev/video2", RS_VGA)		# RS_VGA, RS_720P, or RS_1080P
