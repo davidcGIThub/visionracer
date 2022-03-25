@@ -68,18 +68,18 @@ while True:
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     
-    new_encoder_reading = Car.encoder()
-    print("Encoder: ", new_encoder_reading)
+    # new_encoder_reading = Car.encoder()
+    # print("Encoder: ", new_encoder_reading)
 
-    if new_encoder_reading == prev_encoder_reading:
-        num_encoder_same += 1
-    else:
-        num_encoder_same = 0
+    # if new_encoder_reading == prev_encoder_reading:
+    #     num_encoder_same += 1
+    # else:
+    #     num_encoder_same = 0
 
-    if num_encoder_same > 10:
-        velocity_command = controller.back_up_command()
-        Car.drive(velocity_command)
-        time.sleep(2)
+    # if num_encoder_same > 10:
+    #     velocity_command = controller.back_up_command()
+    #     Car.drive(velocity_command)
+    #     time.sleep(2)
 
 
     
