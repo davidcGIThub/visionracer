@@ -30,7 +30,7 @@ class ReactiveController:
         if len(self.command_history) > 10:
             self.command_history.pop(0)
 
-        wheel_angle_command = self.lowpass_filter()
+        wheel_angle_command = self.lowpass_filter() + 10
 
         print("commanded angle: ", wheel_angle_command)
         return velocity_commmand, wheel_angle_command
