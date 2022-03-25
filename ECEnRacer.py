@@ -21,6 +21,8 @@ From the Realsense camera:
 '''
 
 # import the necessary packages
+from multiprocessing.spawn import old_main_modules
+from torch import numel
 from Arduino import Arduino
 from RealSense import *
 import numpy as np
@@ -47,6 +49,9 @@ Car.zero(1500)      # Set car to go straight.  Change this for your car.
 Car.pid(1)          # Use PID control
 # You can use kd and kp commands to change KP and KD values.  Default values are good.
 # loop over frames from Realsense
+prev_encoder_reading = Car.encoder()
+num_encoder_same = 0
+
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
 
@@ -61,9 +66,28 @@ while True:
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
+    
+    new_encoder_reading = Car.encoder()
+    print("Encoder: ", new_encoder_reading)
+
+    if new_encoder_reading == prev_encoder_reading:
+        num_encoder_same += 1
+    else:
+        num_encoder_same = 0
+
+    if num_encoder_same > 10:
+        velocity_command = controller.back_up_command()
+        Car.drive(velocity_command)
+        time.sleep(2)
+
+
+    
+    
     Car.steer(angle_command)
     # print(angle_command)
     Car.drive(velocity_command)
+
+    
     '''
     Add your code to process rgb, depth, IMU data
     '''
