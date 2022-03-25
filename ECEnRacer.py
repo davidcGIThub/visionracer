@@ -51,20 +51,16 @@ while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
 
     # Detect obstacles
-    tic = time.time()
     detector.process(rgb)
     toc1 = time.time()
 
     # Generate an optimal path
     length, angle, mask = generator.get_direction_vector(detector.combined)
-    toc2 = time.time()
     mask = cv2.resize(mask, (640,316))
     cv2.imshow("obstacles", detector.combined+mask)
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
-    toc3 = time.time()
-    print(tic-toc1, toc1-toc2, toc2-toc3)
     Car.steer(angle_command)
     #Car.drive(velocity_command)
     '''
