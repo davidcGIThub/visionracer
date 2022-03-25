@@ -7,7 +7,7 @@ import numpy as np
 def mask(angle, width = 640, height = 316):
     blank = np.zeros((height, width), np.uint8)
     origin = (int(width/2),height)
-    endx = origin[0] + height * np.tan(angle)
+    endx = origin[0] + height * np.tan(np.radians(angle))
     endpoint = (int(endx), 0)
     cv2.line(blank, origin, endpoint, 255, 2)
     return blank
