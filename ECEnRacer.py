@@ -32,11 +32,11 @@ from reactive_controller import ReactiveController
 import time
 
 # Instantiate lane detection, angle detector and controller
-detector = birdsEye(img_height=1080)
-generator = DirectionVectorGenerator(15, (1920,1080))
-controller = ReactiveController(velocity_gain=1.5/1920)
+detector = birdsEye(img_height=720)
+generator = DirectionVectorGenerator(15, (1280,720))
+controller = ReactiveController(velocity_gain=1.5/1280)
 
-rs = RealSense("/dev/video2", RS_1080P)		# RS_VGA, RS_720P, or RS_1080P
+rs = RealSense("/dev/video2", RS_720P)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
 
 # Use $ ls /dev/tty* to find the serial port connected to Arduino
