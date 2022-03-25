@@ -33,7 +33,7 @@ import time
 
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=640)
-generator = DirectionVectorGenerator(15, (640,480))
+generator = DirectionVectorGenerator(15, (640,detector.height))
 controller = ReactiveController(velocity_gain=1.5/640)
 
 rs = RealSense("/dev/video2", RS_VGA)		# RS_VGA, RS_720P, or RS_1080P
@@ -58,7 +58,7 @@ while True:
     # Generate an optimal path
     length, angle, mask = generator.get_direction_vector(detector.combined)
     toc2 = time.time()
-    mask = cv2.resize(mask, (640,288))
+    mask = cv2.resize(mask, (640,316))
     cv2.imshow("obstacles", detector.combined+mask)
     
     # Compute control 
