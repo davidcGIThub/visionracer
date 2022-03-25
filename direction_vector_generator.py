@@ -78,7 +78,6 @@ class DirectionVectorGenerator:
         avg = np.average(self._angles, weights=weights)
         # print("avg:", np.degrees(avg))
         # print("angle", np.degrees(stream_angle))
-        cv2.imshow("mask", mask)
         return max_stream_length, stream_angle, mask
         
 
