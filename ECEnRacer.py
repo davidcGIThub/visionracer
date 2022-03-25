@@ -49,7 +49,7 @@ Car.zero(1500)      # Set car to go straight.  Change this for your car.
 Car.pid(1)          # Use PID control
 # You can use kd and kp commands to change KP and KD values.  Default values are good.
 # loop over frames from Realsense
-prev_encoder_reading = Car.encoder()
+# prev_encoder_reading = Car.encoder()
 num_encoder_same = 0
 
 while True:
