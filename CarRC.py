@@ -25,9 +25,11 @@
 '''
 
 from Arduino import Arduino
+import time
 # import pygame
 # from pygame.locals import *
 from pynput.keyboard import Key, Listener
+# import Keyboard
 
 keys = [False, False, False, False]
 Car = Arduino("/dev/ttyUSB0", 115200) 
@@ -67,7 +69,11 @@ def on_release(key):
         Car.steer(0)
         keys[3]=False
 
+# keyboard.on_press(on_press)
+# keyboard.on_release(on_release)
 
+# while True:
+#     time.sleep(1)
 # while True:
 with Listener(
         on_press=on_press,
