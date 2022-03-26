@@ -24,12 +24,11 @@ class ReactiveController:
     def proportional_control(self, stream_length, desired_direction):
         velocity_commmand = np.min((self._v_max, self._kp_v * stream_length))
         # wheel_angle_command = np.clip(np.arctan2(self._L*desired_direction, self._lr)  ,-self._delta_max,self._delta_max)
-        wheel_angle_command = desired_direction * self._kp_theta + 7
         # wheel_angle_command = desired_direction * self._kp_theta + (desired_direction-self.command_history[-1])*self._kd_theta
-        # wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00026095 + np.rad2deg(desired_direction)/10 + 7
+        wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00026095 + np.rad2deg(desired_direction)/10 + 7
         
         self.command_history.append(wheel_angle_command)
-        if len(self.command_history) > 6    :
+        if len(self.command_history) > 6:
             self.command_history.pop(0)
 
         wheel_angle_command = self.lowpass_filter()
