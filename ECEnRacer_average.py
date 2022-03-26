@@ -53,6 +53,9 @@ Car.pid(1)          # Use PID control
 # prev_encoder_reading = Car.encoder()
 num_encoder_same = 0
 
+# Wait for user input to continue
+input("Visionracer Initialized\n Press any key to start your race!")
+
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
 
