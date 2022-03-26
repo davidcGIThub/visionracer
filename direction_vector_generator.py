@@ -41,7 +41,27 @@ class DirectionVectorGenerator:
         # img = cv2.resize(img, (self._image_width, self._image_width))
         intersects = cv2.bitwise_and(mask, img)
         return intersects
-        
+    
+    def get_direction_vector_average(self,image):
+        number_of_angles = len(self._angles)
+        stream_lengths = np.zeros(number_of_angles)
+        for i in range(number_of_angles):
+            mask = self._masks[i]
+            intersections = self.check_intersections(mask,image)
+            intersection_locations = np.vstack(np.where(intersections > 0))
+            difference = np.flip(intersection_locations,axis=0).T - np.asarray(self._origin)
+            intersection_distances = np.linalg.norm(difference,2,1)
+            scale = 4
+            stream_lengths[i] = np.clip(intersection_distances.min()**scale, 0, (self._image_height*8/9)**scale)
+        weights = stream_lengths
+        avg_stream_angle = np.average(self._angles, weights=weights)
+        print("avg_stream_angle: ", avg_stream_angle)
+        # print("avg:", np.degrees(avg))
+        # print("angle", np.degrees(stream_angle))
+        print("angles: " , self._angles )
+        index_chosen_angle = np.argmin(np.abs(self._angles - avg_stream_angle))
+        return stream_lengths[index_chosen_angle], avg_stream_angle, self._masks[index_chosen_angle]
+        # return max_stream_length, stream_angle, mask
         
     def get_direction_vector(self,image):
         number_of_angles = len(self._angles)
