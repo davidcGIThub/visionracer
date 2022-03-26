@@ -10,7 +10,8 @@ class ReactiveController:
                         max_velocity = 3, # (m/s) max velocity of car 
                         max_wheel_angle = np.pi/6, # (rad) max turn angle of wheels
                         velocity_gain = 1, # gain coeficient for velocity
-                        angle_gain = 1
+                        angle_gain = 1,
+                        num_filter = 1
                         ):
         self._L = body_length
         self._lr = back_wheel_to_camera_length
@@ -19,6 +20,7 @@ class ReactiveController:
         self._kp_v = velocity_gain
         self._kp_theta = angle_gain
         self._kd_theta = 1
+        self.num_filter = num_filter
         self.command_history = []
     
     def proportional_control(self, stream_length, desired_direction):
@@ -29,7 +31,7 @@ class ReactiveController:
         wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00026095 + np.rad2deg(desired_direction)/10 + 7
         
         self.command_history.append(wheel_angle_command)
-        if len(self.command_history) > 6:
+        if len(self.command_history) > self.num_filter:
             self.command_history.pop(0)
 
         wheel_angle_command = self.lowpass_filter()
