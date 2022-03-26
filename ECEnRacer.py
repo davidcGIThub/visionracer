@@ -61,7 +61,7 @@ while True:
     toc1 = time.time()
 
     # Generate an optimal path
-    length, angle, mask = generator.get_direction_vector(detector.combined)
+    length, angle, mask = generator.get_direction_vector_average(detector.combined)
     print(length)
     mask = cv2.resize(mask, (640,316))
     
