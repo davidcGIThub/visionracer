@@ -28,7 +28,7 @@ class ReactiveController:
         # wheel_angle_command = np.clip(np.arctan2(self._L*desired_direction, self._lr)  ,-self._delta_max,self._delta_max)
         # wheel_angle_command = desired_direction * self._kp_theta + (desired_direction-self.command_history[-1])*self._kd_theta
         # wheel_angle_command = np.rad2deg(desired_direction) * self._kp_theta + 7
-        linear_scale = 5
+        linear_scale = 2
         k = (30-46/linear_scale)/(46**3)
         wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00026095 + np.rad2deg(desired_direction)/5 + 7
         
