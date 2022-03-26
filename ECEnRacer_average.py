@@ -69,7 +69,7 @@ while True:
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     angle_show = m(angle)
-    cv2.imshow("obstacles", detector.combined+angle)
+    cv2.imshow("obstacles", detector.combined+angle_show)
     # new_encoder_reading = Car.encoder()
     # print("Encoder: ", new_encoder_reading)
 
