@@ -63,6 +63,7 @@ while True:
     # Generate an optimal path
     length, angle, mask = generator.get_direction_vector_average(detector.combined)
     print(length)
+    angle = np.degrees(angle)
     mask = cv2.resize(mask, (640,316))
     
     # Compute control 
