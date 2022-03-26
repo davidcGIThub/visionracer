@@ -29,7 +29,7 @@ class ReactiveController:
         # wheel_angle_command = np.rad2deg(desired_direction)**3 * 0.00026095 + np.rad2deg(desired_direction)/10 + 7
         
         self.command_history.append(wheel_angle_command)
-        if len(self.command_history) > 6:
+        if len(self.command_history) > 10:
             self.command_history.pop(0)
 
         wheel_angle_command = self.lowpass_filter()
