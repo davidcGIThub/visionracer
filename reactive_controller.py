@@ -38,6 +38,7 @@ class ReactiveController:
         # self.command_history[-1] = wheel_angle_command
 
         print("commanded angle: ", wheel_angle_command)
+        print("commanded velocity: ", velocity_commmand)
         return velocity_commmand, wheel_angle_command
 
     def lowpass_filter(self):
