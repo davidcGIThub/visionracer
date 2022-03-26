@@ -88,7 +88,7 @@ while True:
 
     
     
-    Car.steer(angle)
+    Car.steer(angle_command)
     Car.drive(velocity_command)
 
     
