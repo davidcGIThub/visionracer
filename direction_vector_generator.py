@@ -101,9 +101,9 @@ class DirectionVectorGenerator:
         return max_stream_length, stream_angle, mask
 
     def check_if_obstacles_are_too_close(self, stream_lengths):
-        number_of_short_streams_tolerance = np.ceil(self._resolution/2)
         streams_in_obstacle_fov = stream_lengths[np.abs(self._angles) < self._obstacle_field_of_view]
         streams_that_are_too_short = streams_in_obstacle_fov[streams_in_obstacle_fov < self._max_obstacle_distance]
+        number_of_short_streams_tolerance = np.ceil(len(streams_in_obstacle_fov)/2)
         if len(streams_that_are_too_short) >= number_of_short_streams_tolerance:
             return True
         else:
