@@ -82,7 +82,7 @@ while True:
     else:
         num_low_norm = 0
 
-    if num_low_norm > 2 and not first:
+    if num_low_norm > 2 and not first and time.time() - start_time > 2:
         num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
