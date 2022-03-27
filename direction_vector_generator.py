@@ -14,6 +14,7 @@ class DirectionVectorGenerator:
         self._image_height = image_size[1]
         self._origin = (int(self._image_width/2),self._image_height)
         self._max_obstacle_distance = 80
+        self._obstacle_field_of_view = np.pi/12
         self._distance_scale = 4
         self._masks = []
         self._angles = []
@@ -99,10 +100,10 @@ class DirectionVectorGenerator:
         # print("angle", np.degrees(stream_angle))
         return max_stream_length, stream_angle, mask
 
-
     def check_if_obstacles_are_too_close(self, stream_lengths):
-        number_of_short_streams_tolerance = 2
-        streams_that_are_too_short = stream_lengths[stream_lengths < self._max_obstacle_distance]
+        streams_in_obstacle_fov = stream_lengths[np.abs(self._angles) < self._obstacle_field_of_view]
+        streams_that_are_too_short = streams_in_obstacle_fov[streams_in_obstacle_fov < self._max_obstacle_distance]
+        number_of_short_streams_tolerance = np.ceil(len(streams_in_obstacle_fov)/2)
         if len(streams_that_are_too_short) >= number_of_short_streams_tolerance:
             return True
         else:
