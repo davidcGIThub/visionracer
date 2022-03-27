@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from direction_vector_generator import DirectionVectorGenerator
+from direction_vector_generator_extended import DirectionVectorGenerator
 from reactive_controller import ReactiveController
 import time
 
