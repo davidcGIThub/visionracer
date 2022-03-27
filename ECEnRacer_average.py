@@ -21,12 +21,9 @@ From the Realsense camera:
 '''
 
 # import the necessary packages
-from multiprocessing.spawn import old_main_modules
-from torch import numel
 from Arduino import Arduino
 from RealSense import *
 import numpy as np
-import imutils
 import cv2
 from birdseye import birdsEye
 from direction_vector_generator_extended import DirectionVectorGenerator
