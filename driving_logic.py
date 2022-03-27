@@ -3,6 +3,8 @@ import numpy as np
 class DrivingLogic:
     def __init__(self):
         self._state = 'STOP'
+        self._TIME_TO_REVERSE = 50
+        self._
 
     def drive(self):
         if self._state == 'STOP':
@@ -12,19 +14,38 @@ class DrivingLogic:
         elif self._state == 'BACK_UP':
             self.back_up_actions
 
+# STATES
+
     def stop_actions(self):
         if self.check_if_car_is_in_race_mode():
             if self.check_if_obstacles_are_too_close():
-                self._state = 'RACE'
-            else:
                 self._state = 'BACK_UP'
+            elif self.check_if_car_is_stuck():
+                self._state = 'BACK_UP'
+            else:
+                self._state = 'RACE'
 
     def race_actions(self):
         if self.check_if_car_is_in_race_mode():
+            if self.check_if_obstacles_are_too_close():
+                self._state = 'BACK_UP'
+            elif self.check_if_car_is_stuck():
+                self._state = 'BACK_UP'
+        else:
+            self._state = 'STOP'
 
     def back_up_actions(self):
-        #TODO
-        pass
+        if self.check_if_car_is_in_race_mode():
+            if self.check_if_obstacles_are_too_close():
+                self._state = 'BACK_UP'
+            elif self.check_if_car_is_stuck():
+                self._state = 'BACK_UP'
+            else:
+                self._state = 'RACE'
+        else:
+            self._state = 'STOP'
+
+# FUNCTIONS
 
     def check_if_car_is_stuck(self):
         #TODO
