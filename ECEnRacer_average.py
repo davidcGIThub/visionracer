@@ -81,7 +81,7 @@ while True:
     else:
         num_low_norm = 0
 
-    if num_low_norm > 2:
+    if num_low_norm > 2 and not first:
         num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
@@ -89,7 +89,6 @@ while True:
         time.sleep(1.5)
 
     if is_too_close and not first:
-        first = False
         num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
@@ -102,7 +101,7 @@ while True:
     Car.steer(angle_command)
     Car.drive(velocity_command)
 
-    
+    first = False
     '''
     Add your code to process rgb, depth, IMU data
     '''
