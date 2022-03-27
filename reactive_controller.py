@@ -31,14 +31,11 @@ class ReactiveController:
         linear_scale = 1
         k = (30-46/linear_scale)/(46**3)
         wheel_angle_command = np.rad2deg(desired_direction)**3 * k + np.rad2deg(desired_direction)/linear_scale + 7
-        
         self.command_history.append(wheel_angle_command)
         if len(self.command_history) > self.num_filter:
             self.command_history.pop(0)
-
         wheel_angle_command = self.lowpass_filter()
         # self.command_history[-1] = wheel_angle_command
-
         print("commanded angle: ", wheel_angle_command)
         print("commanded velocity: ", velocity_commmand)
         return velocity_commmand, wheel_angle_command

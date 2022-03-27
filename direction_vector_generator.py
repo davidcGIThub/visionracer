@@ -13,6 +13,8 @@ class DirectionVectorGenerator:
         self._image_width = image_size[0]
         self._image_height = image_size[1]
         self._origin = (int(self._image_width/2),self._image_height)
+        self._max_obstacle_distance = 100
+        self._distance_scale = 4
         self._masks = []
         self._angles = []
         self.generate_masks_and_angles()
@@ -52,14 +54,12 @@ class DirectionVectorGenerator:
             difference = np.flip(intersection_locations,axis=0).T - np.asarray(self._origin)
             intersection_distances = np.linalg.norm(difference,2,1)
             scale = 4
-            stream_lengths[i] = np.clip(intersection_distances.min()**scale, 0, (self._image_height*8/9)**scale)
-        weights = stream_lengths
+            stream_lengths[i] = np.clip(intersection_distances.min(), 0, (self._image_height*8/9))
+        weights = stream_lengths**scale
         avg_stream_angle = np.average(self._angles, weights=weights)
-        print("avg_stream_angle: ", avg_stream_angle)
-        # print("avg:", np.degrees(avg))
-        # print("angle", np.degrees(stream_angle))
+        is_too_close = self.check_if_obstacles_are_too_close(stream_lengths)
         index_chosen_angle = np.argmin(np.abs(self._angles - avg_stream_angle))
-        return stream_lengths[index_chosen_angle], avg_stream_angle, self._masks[index_chosen_angle]
+        return stream_lengths[index_chosen_angle], avg_stream_angle, self._masks[index_chosen_angle], is_too_close
         # return max_stream_length, stream_angle, mask
         
     def get_direction_vector(self,image):
@@ -98,5 +98,14 @@ class DirectionVectorGenerator:
         # print("avg:", np.degrees(avg))
         # print("angle", np.degrees(stream_angle))
         return max_stream_length, stream_angle, mask
+
+
+    def check_if_obstacles_are_too_close(self, stream_lengths):
+        number_of_short_streams_tolerance = 2
+        streams_that_are_too_short = stream_lengths[stream_lengths < self._max_obstacle_distance]
+        if len(streams_that_are_too_short) >= number_of_short_streams_tolerance:
+            return True
+        else:
+            return False
         
 
