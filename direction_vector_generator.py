@@ -13,7 +13,7 @@ class DirectionVectorGenerator:
         self._image_width = image_size[0]
         self._image_height = image_size[1]
         self._origin = (int(self._image_width/2),self._image_height)
-        self._max_obstacle_distance = 100
+        self._max_obstacle_distance = 80
         self._distance_scale = 4
         self._masks = []
         self._angles = []

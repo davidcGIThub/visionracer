@@ -62,7 +62,7 @@ while True:
     toc1 = time.time()
 
     # Generate an optimal path
-    length, angle, mask = generator.get_direction_vector_average(detector.combined)
+    length, angle, mask, is_too_close = generator.get_direction_vector_average(detector.combined)
     # angle = np.degrees(angle)
     mask = cv2.resize(mask, (640,316))
     
@@ -80,6 +80,11 @@ while True:
         num_low_norm = 0
 
     if num_low_norm > 2:
+        velocity_command = controller.back_up_command()
+        Car.drive(velocity_command)
+        time.sleep(2)
+
+    if is_too_close:
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
         time.sleep(2)
