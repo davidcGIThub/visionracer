@@ -56,6 +56,7 @@ wait = input("\nVisionracer Initialized\n\n Press ENTER to start your race!")
 
 num_low_norm = 0
 first = True
+start_time = time.time()
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
 
@@ -88,7 +89,7 @@ while True:
         Car.steer(0)
         time.sleep(1.5)
 
-    if is_too_close and not first:
+    if is_too_close and not first and time.time() - start_time > 2:
         num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
