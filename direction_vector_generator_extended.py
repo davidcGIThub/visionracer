@@ -27,7 +27,6 @@ class DirectionVectorGenerator:
             y = self._image_height - np.cos(angle) * self._image_height
             
             endpoint = (int(x)-1, int(y)-1)
-            print(angle,endpoint)
             self._endmask[endpoint[1],endpoint[0]] = 255
             mask = np.copy(blank)
             cv2.line(mask, self._origin, endpoint, 255, 2)
@@ -39,8 +38,6 @@ class DirectionVectorGenerator:
         img += self._endmask
         # img = cv2.resize(img, (self._image_width, self._image_width))
         intersects = cv2.bitwise_and(mask, img)
-        cv2.imshow("i", intersects)
-        cv2.waitKey()
         return intersects
     
     def get_direction_vector_average(self,image):
