@@ -30,7 +30,8 @@ class ReactiveController:
         # wheel_angle_command = np.rad2deg(desired_direction) * self._kp_theta + 7
         linear_scale = 1
         k = (30-46/linear_scale)/(46**3)
-        wheel_angle_command = np.rad2deg(desired_direction)**3 * k + np.rad2deg(desired_direction)/linear_scale + 7
+        wheel_angle_command = np.rad2deg(desired_direction)**3 * k + np.rad2deg(desired_direction)/linear_scale + 5
+        
         self.command_history.append(wheel_angle_command)
         if len(self.command_history) > self.num_filter:
             self.command_history.pop(0)

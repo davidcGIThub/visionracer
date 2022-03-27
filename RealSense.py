@@ -56,20 +56,21 @@ class RealSense:
         rsframes = self.pipeline.wait_for_frames()
         color_frame = rsframes.get_color_frame()
         rgb = np.asanyarray(color_frame.get_data())
+        
         # iterate through camera/IMU data, updating global variable
-        for rsframe in rsframes:
-            # Retrieve IMU data
-            if rsframe.is_motion_frame():
-                accel = self.accel_data(rsframe.as_motion_frame().get_motion_data())
-                gyro = self.gyro_data(rsframe.as_motion_frame().get_motion_data())
-            # Retrieve depth data
-            if rsframe.is_depth_frame():
-                rsframes = self.align.process(rsframes)
-                # Update color and depth frames:ss
-                depth_frame = rsframes.get_depth_frame()
-                # Convert to numpy array
-                depth = cv2.normalize(~np.asanyarray(depth_frame.get_data()), None, 255, 0, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-                #depth = np.asanyarray(self.colorizer.colorize(depth_frame).get_data())
+        # for rsframe in rsframes:
+        # Retrieve IMU data
+        # if rsframe.is_motion_frame():
+        accel = self.accel_data(rsframes[2].as_motion_frame().get_motion_data())
+        gyro = self.gyro_data(rsframes[3].as_motion_frame().get_motion_data())
+        # Retrieve depth data
+        # if rsframe.is_depth_frame():
+        rsframes = self.align.process(rsframes)
+        # Update color and depth frames:ss
+        depth_frame = rsframes.get_depth_frame()
+        # Convert to numpy array
+        depth = cv2.normalize(~np.asanyarray(depth_frame.get_data()), None, 255, 0, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+        #depth = np.asanyarray(self.colorizer.colorize(depth_frame).get_data())
         return(time.time(), rgb, depth, accel, gyro)
 
 

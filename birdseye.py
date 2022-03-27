@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from direction_vector_generator import DirectionVectorGenerator
+from direction_vector_generator_extended import DirectionVectorGenerator
 from reactive_controller import ReactiveController
 import time
 
@@ -28,7 +28,7 @@ class birdsEye:
         img = img[self.top_crop:self.bottom_crop,:,:]
 
         # Split into bgr and hsv
-        # cv2.imshow("test", img)
+        cv2.imshow("test", img)
         self.bgr = img
         self.hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         b,g,r = cv2.split(self.bgr)

@@ -26,7 +26,7 @@ from RealSense import *
 import numpy as np
 import cv2
 from birdseye import birdsEye
-from direction_vector_generator_extended import DirectionVectorGenerator
+from direction_vector_generator import DirectionVectorGenerator
 from reactive_controller import ReactiveController
 import time
 from maskgen import mask as m
@@ -53,6 +53,7 @@ num_encoder_same = 0
 # Wait for user input to continue
 wait = input("\nVisionracer Initialized\n\n Press ENTER to start your race!")
 
+num_low_norm = 0
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
 
@@ -67,20 +68,21 @@ while True:
     
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
-    angle_show = m(angle)
+    angle_show = m(np.degrees(angle))
     cv2.imshow("obstacles", detector.combined+angle_show)
-    # new_encoder_reading = Car.encoder()
-    # print("Encoder: ", new_encoder_reading)
+    
+    
+    print("ACCELL: ", np.linalg.norm(accel))
+    print("GYROOO: ", np.linalg.norm(gyro))
+    if np.linalg.norm(accel) <= 9.8 and np.linalg.norm(gyro) < .02:
+        num_low_norm += 1
+    else:
+        num_low_norm = 0
 
-    # if new_encoder_reading == prev_encoder_reading:
-    #     num_encoder_same += 1
-    # else:
-    #     num_encoder_same = 0
-
-    # if num_encoder_same > 10:
-    #     velocity_command = controller.back_up_command()
-    #     Car.drive(velocity_command)
-    #     time.sleep(2)
+    if num_low_norm > 2:
+        velocity_command = controller.back_up_command()
+        Car.drive(velocity_command)
+        time.sleep(2)
 
 
     
