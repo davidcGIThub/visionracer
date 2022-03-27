@@ -86,7 +86,7 @@ while True:
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
         Car.steer(0)
-        time.sleep(2)
+        time.sleep(1.5)
 
     if is_too_close and not first:
         first = False
@@ -94,7 +94,7 @@ while True:
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
         Car.steer(0)
-        time.sleep(2)
+        time.sleep(1.5)
 
 
     
