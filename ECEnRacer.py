@@ -49,10 +49,10 @@ Car = Arduino("/dev/ttyUSB0", 115200)                # Linux
 Car.zero(1500)      # Set car to go straight.  Change this for your car.
 Car.pid(1)          # Use PID control
 # You can use kd and kp commands to change KP and KD values.  Default values are good.
-# loop over frames from Realsense
-# prev_encoder_reading = Car.encoder()
-num_encoder_same = 0
 
+# loop over frames from Realsense
+
+num_low_norm = 0
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
 
@@ -69,18 +69,17 @@ while True:
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     angle_show = m(angle_command)
     cv2.imshow("obstacles", detector.combined+angle_show)
-    # new_encoder_reading = Car.encoder()
-    # print("Encoder: ", new_encoder_reading)
+    
+    
+    if np.linalg.norm(accel) <= 9.8 and np.linalg.norm(gyro) < .02:
+        num_low_norm += 1
+    else:
+        num_low_norm = 0
 
-    # if new_encoder_reading == prev_encoder_reading:
-    #     num_encoder_same += 1
-    # else:
-    #     num_encoder_same = 0
-
-    # if num_encoder_same > 10:
-    #     velocity_command = controller.back_up_command()
-    #     Car.drive(velocity_command)
-    #     time.sleep(2)
+    if num_low_norm > 10:
+        velocity_command = controller.back_up_command()
+        Car.drive(velocity_command)
+        time.sleep(2)
 
 
     
