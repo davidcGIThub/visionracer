@@ -28,7 +28,7 @@ class birdsEye:
         img = img[self.top_crop:self.bottom_crop,:,:]
 
         # Split into bgr and hsv
-        cv2.imshow("test", img)
+        # cv2.imshow("test", img)
         self.bgr = img
         self.hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         b,g,r = cv2.split(self.bgr)
@@ -95,7 +95,7 @@ class birdsEye:
         Minv = cv2.getPerspectiveTransform(dst, src) # Inverse transformation
         # combined = self.cones + self.lanes
         warped_img = cv2.warpPerspective(img, M, (IMAGE_W, IMAGE_H)) # Image warping
-        cv2.imshow("birdseye", warped_img)
+        # cv2.imshow("birdseye", warped_img)
         np.savez("./visionracer/transform2.npz", M)
         
 
@@ -121,11 +121,11 @@ if __name__ == "__main__":
     img_file = "./pictures/"
     for file in os.listdir(img_file):
         img = cv2.imread(img_file+file)
-        cv2.imshow("test", img)
+        # cv2.imshow("test", img)
         processor.process(img)
         max_stream_length, stream_angle, mask = intersects.get_direction_vector(processor.combined)
         mask = cv2.resize(mask, (640,316))
-        cv2.imshow("obstacles", processor.combined+mask)
+        # cv2.imshow("obstacles", processor.combined+mask)
         # Control
         velocity_command, angle_command = controller.proportional_control(max_stream_length, stream_angle) 
         print(velocity_command, angle_command)
