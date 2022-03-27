@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from direction_vector_generator import DirectionVectorGenerator
+from direction_vector_generator_extended import DirectionVectorGenerator
 from reactive_controller import ReactiveController
 from birdseye import birdsEye
 import time
@@ -9,7 +9,7 @@ file = "../Video.avi"
 video = cv2.VideoCapture(file)
 processor = birdsEye(file = "transform2.npz")
 
-intersects = DirectionVectorGenerator(51, (640, processor.height))
+intersects = DirectionVectorGenerator(21, (640, processor.height))
 controller = ReactiveController(velocity_gain=2.5/640, angle_gain=30/46)
 img_file = "./pictures/"
 while(video.isOpened()):
