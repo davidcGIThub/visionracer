@@ -24,6 +24,9 @@ class DrivingLogic:
                 self._state = 'BACK_UP'
             else:
                 self._state = 'RACE'
+        else:
+            #TODO 
+            pass
 
     def race_actions(self):
         if self.check_if_car_is_in_race_mode():
@@ -31,17 +34,21 @@ class DrivingLogic:
                 self._state = 'BACK_UP'
             elif self.check_if_car_is_stuck():
                 self._state = 'BACK_UP'
+            else:
+                self.drive_with_reactive_control()
         else:
             self._state = 'STOP'
 
     def back_up_actions(self):
         if self.check_if_car_is_in_race_mode():
-            if self.check_if_obstacles_are_too_close():
-                self._state = 'BACK_UP'
-            elif self.check_if_car_is_stuck():
-                self._state = 'BACK_UP'
+            if self.check_if_backed_up_long_enough():
+                if self.check_if_obstacles_are_too_close():
+                    #TODO
+                    pass
+                else:
+                    self._state = 'RACE'
             else:
-                self._state = 'RACE'
+                self.back_up_car()
         else:
             self._state = 'STOP'
 
@@ -64,6 +71,10 @@ class DrivingLogic:
         pass
 
     def check_if_car_is_in_race_mode(self):
+        #TODO
+        pass
+
+    def check_if_backed_up_long_enough(self):
         #TODO
         pass
 
