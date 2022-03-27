@@ -27,9 +27,7 @@ class DirectionVectorGenerator:
             endpoint = (int(x), int(y))
             mask = np.copy(blank)
             cv2.line(mask, self._origin, endpoint, 255, 2)
-            cv2.imshow("mask", mask)
-            cv2.waitKey()
-        self._angles = np.array(self._angles)
+            self._masks.append(mask)
 
     def check_intersections(self,mask,img):
         # Check for intersects with each ray
