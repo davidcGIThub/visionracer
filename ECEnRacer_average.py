@@ -108,9 +108,9 @@ while True:
    	IMPORTANT: Never go full speed. Use CarTest.py to selest the best speed for you.
     Car can switch between positve and negative speed (go reverse) without any problem.
     '''
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord("q"):
-        break
+    # key = cv2.waitKey(1) & 0xFF
+    # if key == ord("q"):
+    #     break
 del rs
 del Car
 
