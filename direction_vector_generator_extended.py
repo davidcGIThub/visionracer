@@ -22,13 +22,14 @@ class DirectionVectorGenerator:
         # Generate masks and their angles
         self._angles = np.linspace(-np.pi/2, np.pi/2, self._resolution)
         blank = np.zeros((self._image_height, self._image_width), np.uint8)
+        cv2.circle(blank,self._origin,316,255)
         for angle in self._angles:
             x = np.sin(angle) * self._image_height + self._image_width/2
             y = self._image_height - np.cos(angle) * self._image_height
             
             endpoint = (int(x), int(y))
             print(endpoint)
-            self._endmask[endpoint[1]-1,endpoint[0]-1] = 255
+            # self._endmask[endpoint[1]-1,endpoint[0]-1] = 255
             mask = np.copy(blank)
             cv2.line(mask, self._origin, endpoint, 255, 2)
             self._masks.append(mask)
@@ -36,7 +37,7 @@ class DirectionVectorGenerator:
     def check_intersections(self,mask,img):
         # Check for intersects with each ray
         # img[0,:] = 255
-        img += self._endmask
+        # img += self._endmask
         # img = cv2.resize(img, (self._image_width, self._image_width))
         intersects = cv2.bitwise_and(mask, img)
         return intersects

@@ -34,7 +34,7 @@ from maskgen import mask as m
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=480)
 generator = DirectionVectorGenerator(21, (640,detector.height))
-controller = ReactiveController(velocity_gain=2/316, angle_gain=30/66)
+controller = ReactiveController(velocity_gain=2.5/316, angle_gain=30/66)
 
 rs = RealSense("/dev/video2", RS_VGA)		# RS_VGA, RS_720P, or RS_1080P
 writer = None
@@ -60,7 +60,7 @@ while True:
     # Detect obstacles
     detector.process(rgb)
     toc1 = time.time()
-
+    print("here")
     # Generate an optimal path
     length, angle, mask, is_too_close = generator.get_direction_vector_average(detector.combined)
     # angle = np.degrees(angle)
@@ -69,7 +69,7 @@ while True:
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     angle_show = m(np.degrees(angle))
-    cv2.imshow("obstacles", detector.combined+angle_show)
+    # cv2.imshow("obstacles", detector.combined+angle_show)
     
     
     print("ACCELL: ", np.linalg.norm(accel))
@@ -80,13 +80,17 @@ while True:
         num_low_norm = 0
 
     if num_low_norm > 2:
+        num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
+        Car.steer(0)
         time.sleep(2)
 
     if is_too_close:
+        num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
+        Car.steer(0)
         time.sleep(2)
 
 
@@ -108,9 +112,9 @@ while True:
    	IMPORTANT: Never go full speed. Use CarTest.py to selest the best speed for you.
     Car can switch between positve and negative speed (go reverse) without any problem.
     '''
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord("q"):
-        break
+    # key = cv2.waitKey(1) & 0xFF
+    # if key == ord("q"):
+    #     break
 del rs
 del Car
 
