@@ -83,12 +83,14 @@ while True:
         num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
+        Car.steer(0)
         time.sleep(2)
 
     if is_too_close:
         num_low_norm = 0
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
+        Car.steer(0)
         time.sleep(2)
 
 
