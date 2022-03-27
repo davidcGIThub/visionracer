@@ -71,6 +71,8 @@ while True:
     cv2.imshow("obstacles", detector.combined+angle_show)
     
     
+    print("ACCELL: ", np.linalg.norm(accel))
+    print("GYROOO: ", np.linalg.norm(gyro))
     if np.linalg.norm(accel) <= 9.8 and np.linalg.norm(gyro) < .02:
         num_low_norm += 1
     else:
