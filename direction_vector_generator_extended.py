@@ -8,7 +8,7 @@ import numpy as np
 import scipy
 
 class DirectionVectorGenerator:
-    def __init__(self , resolution=11, image_size=(640,480)):
+    def __init__(self , resolution=15, image_size=(640,480)):
         self._resolution = resolution
         self._image_width = image_size[0]
         self._image_height = image_size[1]
