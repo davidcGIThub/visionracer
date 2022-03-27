@@ -52,7 +52,7 @@ num_encoder_same = 0
 
 # Wait for user input to continue
 wait = input("\nVisionracer Initialized\n\n Press ENTER to start your race!")
-
+print("here")
 num_low_norm = 0
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
