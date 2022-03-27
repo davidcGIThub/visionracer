@@ -79,7 +79,7 @@ while True:
     else:
         num_low_norm = 0
 
-    if num_low_norm > 5:
+    if num_low_norm > 2:
         velocity_command = controller.back_up_command()
         Car.drive(velocity_command)
         time.sleep(2)
