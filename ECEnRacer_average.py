@@ -69,7 +69,7 @@ while True:
     # Compute control 
     velocity_command, angle_command = controller.proportional_control(length, angle) 
     angle_show = m(np.degrees(angle))
-    cv2.imshow("obstacles", detector.combined+angle_show)
+    # cv2.imshow("obstacles", detector.combined+angle_show)
     
     
     print("ACCELL: ", np.linalg.norm(accel))
