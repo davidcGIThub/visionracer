@@ -51,6 +51,11 @@ class birdsEye:
         self.lanes = cv2.morphologyEx(self.lanes, cv2.MORPH_OPEN, self.kernel)
         self.cones = cv2.morphologyEx(self.cones, cv2.MORPH_OPEN, self.kernel)
         self.combined = self.cones + self.lanes
+        # cv2.imshow('not blurred',self.combined)
+        # self.combined = cv2.blur(self.combined,(10,10))
+        # _, self.combined = cv2.threshold(self.combined,150,255,cv2.THRESH_BINARY)
+        # cv2.imshow('blurred',self.combined)
+        # cv2.waitKey()
         kernel = np.ones((30,30), np.uint8)
         self.combined = cv2.dilate(self.combined,kernel)
 

@@ -13,6 +13,8 @@ class DirectionVectorGenerator:
         self._image_width = image_size[0]
         self._image_height = image_size[1]
         self._origin = (int(self._image_width/2-1),self._image_height-1)
+        self._max_obstacle_distance = 80
+        self._obstacle_field_of_view = np.pi/12
         self._masks = []
         self._endmask = np.zeros((self._image_height, self._image_width), np.uint8)
         self._angles = []
@@ -22,16 +24,18 @@ class DirectionVectorGenerator:
         # Generate masks and their angles
         self._angles = np.linspace(-np.pi/2, np.pi/2, self._resolution)
         blank = np.zeros((self._image_height, self._image_width), np.uint8)
-        cv2.circle(blank,self._origin,316,255)
+        
         for angle in self._angles:
             x = np.sin(angle) * self._image_height + self._image_width/2
             y = self._image_height - np.cos(angle) * self._image_height
             
             endpoint = (int(x), int(y))
-            print(endpoint)
+            # print(endpoint)
             # self._endmask[endpoint[1]-1,endpoint[0]-1] = 255
             mask = np.copy(blank)
             cv2.line(mask, self._origin, endpoint, 255, 2)
+            # cv2.imshow('mask',mask)
+            # cv2.waitKey()
             self._masks.append(mask)
 
     def check_intersections(self,mask,img):
@@ -39,12 +43,16 @@ class DirectionVectorGenerator:
         # img[0,:] = 255
         # img += self._endmask
         # img = cv2.resize(img, (self._image_width, self._image_width))
+        
         intersects = cv2.bitwise_and(mask, img)
+        cv2.imshow('intersections',intersects)
+        cv2.waitKey(1)
         return intersects
     
     def get_direction_vector_average(self,image):
         number_of_angles = len(self._angles)
         stream_lengths = np.zeros(number_of_angles)
+        cv2.circle(image,self._origin,316,255,2)
         for i in range(number_of_angles):
             mask = self._masks[i]
             intersections = self.check_intersections(mask,image)
@@ -52,8 +60,10 @@ class DirectionVectorGenerator:
             difference = np.flip(intersection_locations,axis=0).T - np.asarray(self._origin)
             intersection_distances = np.linalg.norm(difference,2,1)
             scale = 4
-            stream_lengths[i] = np.clip(intersection_distances.min()**scale, 0, (self._image_height*8/9)**scale)
-        weights = stream_lengths
+            stream_lengths[i] = np.clip(intersection_distances.min(), 0, (self._image_height*8/9))
+        weights = stream_lengths**scale
+        if np.all(weights == 0):
+            return 0,0,self._masks[int(self._resolution/2)],True
         avg_stream_angle = np.average(self._angles, weights=weights)
         is_too_close = self.check_if_obstacles_are_too_close(stream_lengths)
         index_chosen_angle = np.argmin(np.abs(self._angles - avg_stream_angle))
@@ -69,7 +79,7 @@ class DirectionVectorGenerator:
             intersection_locations = np.vstack(np.where(intersections > 0))
             difference = np.flip(intersection_locations,axis=0).T - np.asarray(self._origin)
             intersection_distances = np.linalg.norm(difference,2,1)
-            closest_point = intersection_locations[:,np.argmin(intersection_distances)]
+            # closest_point = intersection_locations[:,np.argmin(intersection_distances)]
             stream_lengths[i] = np.clip(intersection_distances.min(), 0, self._image_height*8/9)
         max_stream_length = np.max(stream_lengths)
         index_max_stream = np.argmax(stream_lengths)
