@@ -89,12 +89,12 @@ while True:
         Car.steer(0)
         time.sleep(1.5)
 
-    if is_too_close and not first and time.time() - start_time > 2:
-        num_low_norm = 0
-        velocity_command = controller.back_up_command()
-        Car.drive(velocity_command)
-        Car.steer(0)
-        time.sleep(1.5)
+    # if is_too_close and not first and time.time() - start_time > 2:
+    #     num_low_norm = 0
+    #     velocity_command = controller.back_up_command()
+    #     Car.drive(velocity_command)
+    #     Car.steer(0)
+    #     time.sleep(1.5)
 
 
     
