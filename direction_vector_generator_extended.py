@@ -45,8 +45,8 @@ class DirectionVectorGenerator:
         # img = cv2.resize(img, (self._image_width, self._image_width))
         
         intersects = cv2.bitwise_and(mask, img)
-        cv2.imshow('intersections',intersects)
-        cv2.waitKey(1)
+        # cv2.imshow('intersections',intersects)
+        # cv2.waitKey(1)
         return intersects
     
     def get_direction_vector_average(self,image):
