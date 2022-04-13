@@ -38,8 +38,8 @@ generator = DirectionVectorGenerator(31, (640,detector.height))
 controller = ReactiveController(velocity_gain=2.5/316, angle_gain=30/66)
 
 rs = RealSense("/dev/video2", RS_VGA)		# RS_VGA, RS_720P, or RS_1080P
-writer = None
-
+video_out = cv2.VideoWriter('hw8_video.avi',cv2.VideoWriter_fourcc(*'XVID'),30,(640,480))
+record = True
 # Use $ ls /dev/tty* to find the serial port connected to Arduino
 Car = Arduino("/dev/ttyUSB0", 115200)                # Linux
 #Car = Arduino("/dev/tty.usbserial-2140", 115200)    # Mac
@@ -59,7 +59,9 @@ first = True
 start_time = time.time()
 while True:
     (t, rgb, depth, accel, gyro) = rs.getData()
-
+    if record:
+        video_out.write(rgb)
+    
     # Detect obstacles
     detector.process(rgb)
     toc1 = time.time()
