@@ -26,8 +26,8 @@ from RealSense import *
 import numpy as np
 import cv2
 from birdseye import birdsEye
-# from direction_vector_generator import DirectionVectorGenerator
-from direction_vector_generator_extended import DirectionVectorGenerator
+from direction_vector_generator import DirectionVectorGenerator
+# from direction_vector_generator_extended import DirectionVectorGenerator
 from reactive_controller import ReactiveController
 import time
 from maskgen import mask as m
