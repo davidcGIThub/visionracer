@@ -35,7 +35,7 @@ from maskgen import mask as m
 # Instantiate lane detection, angle detector and controller
 detector = birdsEye(img_height=480)
 generator = DirectionVectorGenerator(31, (640,detector.height))
-controller = ReactiveController(velocity_gain=2.5/316, angle_gain=30/66)
+controller = ReactiveController(velocity_gain=1.5/316, angle_gain=30/66)
 
 rs = RealSense("/dev/video2", RS_VGA)		# RS_VGA, RS_720P, or RS_1080P
 video_out = cv2.VideoWriter('hw8_video.avi',cv2.VideoWriter_fourcc(*'XVID'),30,(640,480))
